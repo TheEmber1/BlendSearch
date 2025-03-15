@@ -1,6 +1,12 @@
 [
   {
     "category": "General Shortcuts",
+    "action": "Add Menu (Create New Objects)",
+    "keys": "Shift + A",
+    "searchTerms": "add menu create new object mesh cube sphere plane light camera shift+a primary add create add cube add object"
+  },
+  {
+    "category": "General Shortcuts",
     "action": "Select/Deselect All",
     "keys": "A",
     "searchTerms": "select/deselect all a general shortcuts"
