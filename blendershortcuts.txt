@@ -1,0 +1,182 @@
+General Shortcuts
+A: Select all / Deselect all
+B: Box select
+C: Circle select
+G: Grab/move
+R: Rotate
+S: Scale
+E: Extrude
+F: Make face/edge
+X: Delete
+Z: Toggle wireframe/solid view
+Shift + A: Add menu
+Shift + D: Duplicate
+Alt + D: Linked duplicate
+Ctrl + Z: Undo
+Ctrl + Shift + Z: Redo
+Tab: Toggle edit mode
+Shift + Tab: Toggle between object and edit mode
+Ctrl + J: Join objects
+Ctrl + P: Parent objects
+Alt + P: Clear parent
+Ctrl + A: Apply transformations
+Ctrl + Tab: Pie menu for mode selection
+N: Toggle sidebar
+T: Toggle tool shelf
+F3: Search menu
+Ctrl + Alt + Q: Quad view
+Ctrl + S: Save
+Ctrl + Shift + S: Save as
+Ctrl + O: Open file
+Ctrl + N: New file
+Ctrl + Q: Quit Blender
+Q: Quick favorites menu
+W: Quick tools menu
+Shift + S: Snap menu
+Shift + C: Reset 3D cursor to world origin
+Alt + G: Clear location
+Alt + R: Clear rotation
+Alt + S: Clear scale
+Ctrl + Alt + Shift + C: Set origin menu
+Shift + R: Repeat last command
+Shift + F: Fly navigation mode
+Ctrl + Space: Toggle tool settings
+Shift + W: Toggle gizmo visibility
+Ctrl + Alt + Space: Toggle fullscreen area
+Ctrl + B: Border select (in Object mode)
+
+Viewport Navigation
+Middle Mouse Button (MMB): Rotate view
+Shift + MMB: Pan view
+Ctrl + MMB or Scroll Wheel: Zoom view
+Numpad 0: Camera view
+Numpad 1: Front view
+Numpad 3: Right view
+Numpad 7: Top view
+Numpad 5: Toggle perspective/orthographic view
+Numpad 2/4/6/8: Rotate view
+Numpad 9: Opposite view
+Home: Frame all
+Period (.): Frame selected
+Slash (/) or Numpad /: Isolate selection (Local view)
+Shift + Z: Toggle render preview
+Alt + MMB: Orbit around selection
+Shift + F: Walk/Fly mode
+Ctrl + Alt + Q: Toggle quad view
+Shift + B: Zoom to box
+Alt + Home: View all objects in all viewports
+
+Object Mode
+Ctrl + A: Apply transformations
+Ctrl + J: Join objects
+M: Move to collection
+Shift + Ctrl + Alt + C: Set origin
+H: Hide selected
+Alt + H: Unhide all
+Ctrl + L: Make links
+Ctrl + G: Add to new group
+Ctrl + Alt + G: Remove from group
+Shift + L: Select linked
+Ctrl + P: Set parent
+Alt + P: Clear parent
+Ctrl + Shift + P: Pin object
+Ctrl + Numpad +: Increase subdivision level
+Ctrl + Numpad -: Decrease subdivision level
+
+Edit Mode
+Ctrl + R: Loop cut
+K: Knife tool
+I: Inset face
+M: Merge vertices
+P: Separate selection
+Shift + E: Extrude along normals
+Ctrl + B: Bevel
+Ctrl + E: Edge menu
+Ctrl + F: Face menu
+Ctrl + V: Vertex menu
+Alt + M: Merge at center/first/last
+Alt + S: Shrink/fatten
+U: UV mapping menu
+L: Select linked
+Ctrl + L: Select linked all
+Ctrl + I: Invert selection
+Alt + J: Tris to quads
+Shift + N: Recalculate normals
+Ctrl + T: Triangulate faces
+Shift + Ctrl + B: Vertex bevel
+Alt + E: Extrude menu
+Ctrl + Shift + R: Offset edge loop cut
+Y: Split
+V: Rip vertices
+Shift + V: Rip edges
+Ctrl + Shift + V: Slide vertices
+Shift + G: Select similar
+Ctrl + Shift + Alt + M: Merge by distance
+Shift + Ctrl + E: Un-subdivide
+Alt + F: Fill
+
+Sculpt Mode
+D: Dynamic topology toggle
+Shift + D: Duplicate brush
+F: Adjust brush size
+Shift + F: Adjust brush strength
+Ctrl: Smooth brush (hold)
+Shift: Invert brush action (hold)
+Ctrl + R: Toggle symmetry
+X/Y/Z: Set symmetry axis
+M: Toggle mask
+Shift + M: Invert mask
+Ctrl + M: Clear mask
+Ctrl + I: Invert mask
+Alt + S: Scale brush texture
+
+Animation
+Spacebar: Play/Pause animation
+Shift + Spacebar: Play animation in the viewport
+I: Insert keyframe
+Alt + I: Delete keyframe
+Ctrl + Shift + A: Insert keyframe for all properties
+Right Arrow: Next frame
+Left Arrow: Previous frame
+Up/Down Arrow: Jump to keyframe
+Alt + A: Play animation (back and forth)
+Shift + Alt + A: Play animation in reverse
+K: Set keyframe menu
+Alt + K: Clear keyframe
+Shift + K: Set keyframe for selected channels
+Ctrl + K: Add keyframe menu
+]: Go to next keyframe
+[: Go to previous keyframe
+Alt + ]: Go to next marker
+Alt + [: Go to previous marker
+
+Rendering
+F12: Render image
+Ctrl + F12: Render animation
+Ctrl + B: Set render border
+Ctrl + Alt + B: Clear render border
+Shift + Z: Rendered viewport shading
+
+Miscellaneous
+F3: Search menu
+Shift + Space: Toggle fullscreen
+Ctrl + Spacebar: Toggle maximize area
+Ctrl + PageUp / Ctrl + PageDown: Next/previous workspace
+Ctrl + U: Save startup file
+Ctrl + Alt + U: User preferences
+Ctrl + Alt + W: Save workspace
+Ctrl + Shift + Alt + W: Link workspace from file
+Shift + F1: Open File Browser
+Shift + F2: Open Logic Editor
+Shift + F3: Open Node Editor
+Shift + F4: Open Console
+Shift + F5: Open 3D View
+Shift + F6: Open Graph Editor
+Shift + F7: Open Properties Editor
+Shift + F8: Open Video Sequence Editor
+Shift + F9: Open Outliner
+Shift + F10: Open UV/Image Editor
+Shift + F11: Open Text Editor
+Shift + F12: Open Dope Sheet
+
+Remember, these shortcuts may vary slightly depending on your exact Blender version and any custom keymaps you might have set up. Always refer to the official Blender documentation for the most up-to-date information.

@@ -1,0 +1,50 @@
+[
+  {
+    "category": "General Shortcuts",
+    "action": "Select/Deselect All",
+    "keys": "A",
+    "searchTerms": "select/deselect all a general shortcuts"
+  },
+  {
+    "category": "General Shortcuts",
+    "action": "Box Select",
+    "keys": "B",
+    "searchTerms": "box select b general shortcuts"
+  },
+  {
+    "category": "General Shortcuts",
+    "action": "Circle Select",
+    "keys": "C",
+    "searchTerms": "circle select c general shortcuts"
+  },
+  {
+    "category": "General Shortcuts",
+    "action": "Grab/Move",
+    "keys": "G",
+    "searchTerms": "grab/move g general shortcuts"
+  },
+  {
+    "category": "General Shortcuts",
+    "action": "Scale",
+    "keys": "S",
+    "searchTerms": "scale s general shortcuts"
+  },
+  {
+    "category": "General Shortcuts",
+    "action": "Rotate",
+    "keys": "R",
+    "searchTerms": "rotate r general shortcuts"
+  },
+  {
+    "category": "General Shortcuts",
+    "action": "Extrude",
+    "keys": "E",
+    "searchTerms": "extrude e general shortcuts"
+  },
+  {
+    "category": "General Shortcuts",
+    "action": "Delete",
+    "keys": "X",
+    "searchTerms": "delete x general shortcuts"
+  }
+]
