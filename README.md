@@ -35,7 +35,7 @@ BlendSearch uses multiple data sources to find shortcuts:
 
 The application will clearly indicate when it's using fallback data sources that may be less accurate.
 
-**Note**: All shortcuts are verified to work with Blender 4.3. Most shortcuts will also work with earlier versions of Blender, but some may have changed since previous releases.
+**Note**: Most shortcuts are verified to work with Blender 4.3. Most shortcuts will also work with earlier versions of Blender, but some may have changed since previous releases.
 
 ## Technology
 
