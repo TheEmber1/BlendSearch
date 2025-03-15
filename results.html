@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,11 @@
 </head>
 <body>
     <div class="container">
+        <!-- Theme toggle button -->
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
+        
         <header>
             <h1>Blend<span class="title-accent">Search</span></h1>
             <p class="tagline">Find Blender shortcuts in an instant</p>
@@ -23,11 +28,15 @@
                 </div>
                 <div class="search-results" id="search-results">
                     <!-- Results will be populated by JavaScript -->
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>Loading results...</p>
+                    </div>
                 </div>
             </div>
         </main>
         <footer>
-            <p>BlendSearch © 2023 | Your Ultimate Blender Shortcuts Resource</p>
+            <p>BlendSearch © 2025 | Your Ultimate Blender Shortcuts Resource</p>
             <p class="creator-credit">Created by <a href="https://youtube.com/@The_Ember" target="_blank" class="creator-link">THE EMBER <i class="fab fa-youtube"></i></a></p>
         </footer>
     </div>

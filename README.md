@@ -7,8 +7,7 @@ BlendSerch is a fast, efficient web application designed to help Blender users q
 ## Features
 
 - **Instant Search**: Find Blender shortcuts as you type
-- **Category Filtering**: Browse shortcuts by category (General, Edit Mode, Object Mode, etc.)
-- **Popular Searches**: Quick access to commonly searched shortcuts
+- **Intelligent Results**: Smart filtering to prevent duplicate shortcuts
 - **Recent Searches**: Keep track of your previously searched shortcuts
 - **Website Results**: Option to include relevant web resources in search results
 - **Responsive Design**: Works on desktop and mobile devices

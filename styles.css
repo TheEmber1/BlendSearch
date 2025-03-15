@@ -1,16 +1,36 @@
 :root {
+    /* Light theme colors */
     --main-color: #4e3df0;
     --secondary-color: #7b6cf6;
     --bg-color: #f8f9fc;
     --text-color: #333;
     --light-color: #fff;
+    --card-bg: #fff;
+    --input-border: #e1e5ee;
     --shadow: 0 4px 12px rgba(78, 61, 240, 0.15);
+    --subtle-text: #666;
+    --border-color: #e1e5ee;
+}
+
+/* Dark theme colors */
+[data-theme="dark"] {
+    --main-color: #7b6cf6;
+    --secondary-color: #9e93f5;
+    --bg-color: #1a1a1a;
+    --text-color: #f0f0f0;
+    --light-color: #2a2a2a;
+    --card-bg: #2a2a2a;
+    --input-border: #3a3a3a;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --subtle-text: #b0b0b0;
+    --border-color: #444;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
 body {
@@ -73,10 +93,11 @@ main {
 .search-container {
     width: 100%;
     max-width: 800px;  /* Increased from 600px to 800px */
-    background: var(--light-color);
+    background: var(--card-bg);
     padding: 2rem;
     border-radius: 16px;
     box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
 }
 
 h2 {
@@ -95,10 +116,12 @@ h2 {
 #search-input {
     flex: 1;
     padding: 0.8rem 1rem;
-    border: 2px solid #e1e5ee;
+    border: 2px solid var(--input-border);
     border-radius: 8px;
     font-size: 1rem;
     transition: all 0.3s ease;
+    background-color: var(--card-bg);
+    color: var(--text-color);
 }
 
 #search-input:focus {
@@ -108,7 +131,7 @@ h2 {
 
 #search-button {
     position: absolute;
-    right: 10px;
+    right: 4px;  /* Changed from 8px to 6px for more spacing from the right */
     top: 50%;
     transform: translateY(-50%);
     background: var(--main-color);
@@ -307,10 +330,11 @@ footer {
 }
 
 .search-results {
-    background: var(--light-color);
+    background: var(--card-bg);
     border-radius: 16px;
     padding: 2rem;
     box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
 }
 
 .search-header {
@@ -343,8 +367,9 @@ footer {
 }
 
 .shortcut-card {
-    border-bottom: 1px solid #e1e5ee;
+    border-bottom: 1px solid var(--border-color);
     padding: 1rem 0;
+    margin-bottom: 0.5rem;
 }
 
 .shortcut-card:last-child {
@@ -646,6 +671,70 @@ footer {
 .searching-docs-message p {
     font-style: italic;
     font-size: 0.9rem;
+}
+
+/* Source attribution styling */
+.source-attribution {
+    background-color: rgba(78, 61, 240, 0.05);
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #666;
+    text-align: center;
+    border: 1px dashed rgba(78, 61, 240, 0.2);
+}
+
+.source-attribution a {
+    color: var(--main-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.source-attribution a:hover {
+    text-decoration: underline;
+}
+
+/* Warning attribution styling - combines the warning and attribution */
+.warning-attribution {
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-left: 3px solid #ffc107;
+    color: #856404;
+    font-weight: normal;
+}
+
+.warning-attribution i {
+    margin-right: 0.5rem;
+    color: #ffc107;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    z-index: 100;
+    transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover {
+    transform: rotate(45deg);
+}
+
+.theme-toggle i {
+    font-size: 1.2rem;
 }
 
 /* Responsive design */

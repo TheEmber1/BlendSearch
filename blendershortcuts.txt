@@ -1,6 +1,3 @@
-Now when i type anything in, it keeps saying nothing is loading
-
-
 General Shortcuts
 A: Select all / Deselect all
 B: Box select

@@ -2,25 +2,38 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('search-input');
     const searchButton = document.getElementById('search-button');
     const webSearchCheckbox = document.getElementById('enable-web-search');
-    const popularTags = document.querySelectorAll('.tag');
     const recentSearchesContainer = document.getElementById('recent-searches-container');
     const recentSearchesDiv = document.getElementById('recent-searches');
+    const themeToggle = document.getElementById('theme-toggle');
+    
+    // Initialize theme from localStorage or default to light
+    initTheme();
+    
+    // Theme toggle functionality
+    themeToggle.addEventListener('click', toggleTheme);
     
     // Load recent searches from localStorage
     loadRecentSearches();
     
-    // Check if we're returning from results page and populate the search input
+    // Check if we're returning from results page and restore state
     const returnSearch = sessionStorage.getItem('returnSearch');
+    const webSearchState = sessionStorage.getItem('webSearchState');
+    
     if (returnSearch) {
         searchInput.value = returnSearch;
         sessionStorage.removeItem('returnSearch'); // Clear after using
         
         // Check if this was an actual search and add it to recents
-        // This handles the case where a user searched and then clicked back
         if (returnSearch.trim() !== '') {
             addToRecentSearches(returnSearch);
             loadRecentSearches(); // Refresh the display immediately
         }
+    }
+    
+    // Restore checkbox state if it was set
+    if (webSearchState === 'true') {
+        webSearchCheckbox.checked = true;
+        sessionStorage.removeItem('webSearchState'); // Clear after using
     }
     
     // Handle search form submission
@@ -30,9 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Save search query to localStorage
             localStorage.setItem('searchQuery', query);
             localStorage.setItem('webSearchEnabled', webSearchCheckbox.checked);
-            
-            // Store in session storage to retrieve when returning
-            sessionStorage.setItem('returnSearch', query);
             
             // Add to recent searches
             addToRecentSearches(query);
@@ -50,15 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Enter') {
             performSearch();
         }
-    });
-    
-    // Handle popular tag clicks
-    popularTags.forEach(tag => {
-        tag.addEventListener('click', function() {
-            const searchTerm = this.getAttribute('data-search');
-            searchInput.value = searchTerm;
-            performSearch();
-        });
     });
     
     // Recent searches functionality
@@ -116,5 +117,31 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Save back to localStorage
         localStorage.setItem('recentSearches', JSON.stringify(trimmedSearches));
+    }
+    
+    // Theme functionality
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+    }
+    
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        updateThemeIcon(newTheme);
+    }
+    
+    function updateThemeIcon(theme) {
+        const icon = themeToggle.querySelector('i');
+        if (theme === 'dark') {
+            icon.className = 'fas fa-sun';
+        } else {
+            icon.className = 'fas fa-moon';
+        }
     }
 });

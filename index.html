@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,11 @@
 </head>
 <body>
     <div class="container">
+        <!-- Theme toggle button -->
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
+        
         <header>
             <h1>Blend<span class="title-accent">Search</span></h1>
             <p class="tagline">Find Blender shortcuts in an instant</p>
@@ -27,19 +32,8 @@
                     <label class="checkbox-container">
                         <input type="checkbox" id="enable-web-search">
                         <span class="checkmark"></span>
-                        Include website results
+                        Include external websites in search results
                     </label>
-                </div>
-                <div class="popular-searches">
-                    <h3>Popular searches:</h3>
-                    <div class="tags">
-                        <span class="tag" data-search="select">Select</span>
-                        <span class="tag" data-search="extrude">Extrude</span>
-                        <span class="tag" data-search="view">View</span>
-                        <span class="tag" data-search="edit">Edit Mode</span>
-                        <span class="tag" data-search="sculpt">Sculpt</span>
-                        <span class="tag" data-search="render">Render</span>
-                    </div>
                 </div>
                 
                 <div class="recent-searches" id="recent-searches-container">
@@ -51,7 +45,7 @@
             </div>
         </main>
         <footer>
-            <p>BlendSearch © 2023 | Your Ultimate Blender Shortcuts Resource</p>
+            <p>BlendSearch © 2025 | Your Ultimate Blender Shortcuts Resource</p>
             <p class="creator-credit">Created by <a href="https://youtube.com/@The_Ember" target="_blank" class="creator-link">THE EMBER <i class="fab fa-youtube"></i></a></p>
         </footer>
     </div>
