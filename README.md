@@ -9,11 +9,10 @@ BlendSearch is a fast, efficient web application designed to help Blender users 
 ## Features
 
 - **Instant Search**: Find Blender shortcuts as you type
-- **Intelligent Results**: Smart filtering to prevent duplicate shortcuts
 - **Recent Searches**: Keep track of your previously searched shortcuts
 - **Website Results**: Option to include relevant web resources in search results
 - **Responsive Design**: Works on desktop and mobile devices
-- **Dark Mode**: Toggle between light and dark themes for comfortable viewing in any environment
+- **Dark Mode**: Toggle between light and dark themes (can't live without dark mode 😉!)
 - **Multiple Data Sources**: Falls back to alternative sources if primary data is unavailable
 
 ## How to Use
@@ -25,14 +24,7 @@ BlendSearch is a fast, efficient web application designed to help Blender users 
 5. Click "Back to Search" to start a new search
 6. Toggle dark mode using the moon/sun icon in the top right corner
 
-![Dark Mode](Screenshots/dark-mode.png)
-
-## Search Tips
-
-- Search for actions like "rotate" or "select"
-- Search for specific keys like "shift+a" or "ctrl+j"
-- Try searching for what you want to do, like "add object" or "join meshes"
-- Enable the "Include external websites" checkbox to get web resources related to your query
+![Dark Mode](Screenshots/dark-mode.jpg)
 
 ## Data Sources
 
