@@ -279,7 +279,32 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // If no results found in JSON, try searching in the text file
             if (sessionStorage.getItem('dataSource') === 'json') {
-                fetchFallbackShortcuts(query, processedQuery);
+                // Add timeout to prevent infinite loading state
+                const fallbackTimeout = setTimeout(() => {
+                    if (document.querySelector('.searching-docs-message')) {
+                        searchResults.innerHTML = `
+                            <div class="no-results">
+                                <p>No shortcuts found for "${query}" in any data source.</p>
+                                <p>Try a different search term or check your spelling.</p>
+                            </div>
+                        `;
+                    }
+                }, 5000); // 5 seconds timeout
+                
+                fetchFallbackShortcuts(query, processedQuery)
+                    .then(() => {
+                        clearTimeout(fallbackTimeout); // Clear timeout if fetch completes normally
+                    })
+                    .catch(error => {
+                        clearTimeout(fallbackTimeout); // Clear timeout if fetch fails
+                        console.error('Fallback fetch error:', error);
+                        searchResults.innerHTML = `
+                            <div class="no-results">
+                                <p>No shortcuts found for "${query}" in any data source.</p>
+                                <p>Try a different search term or check your spelling.</p>
+                            </div>
+                        `;
+                    });
             }
             return;
         }
@@ -293,57 +318,63 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // New function to fetch fallback shortcuts from text file when JSON search fails
     function fetchFallbackShortcuts(query, processedQuery) {
-        fetch('blendershortcuts.txt')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch text: ${response.status}`);
-                }
-                return response.text();
-            })
-            .then(text => {
-                const textShortcuts = parseShortcutsText(text);
-                console.log('Successfully loaded fallback text data');
-                
-                // Process search with text file data
-                const queryLower = processedQuery ? processedQuery.toLowerCase() : query.toLowerCase();
-                const searchWords = queryLower.split(/\s+/).filter(word => word.trim().length > 0);
-                
-                // Filter shortcuts based on search terms
-                const filteredShortcuts = textShortcuts.filter(shortcut => {
-                    for (const word of searchWords) {
-                        if (word.length <= 1) continue; // Skip very short terms
-                        
-                        // Check if any part of the shortcut matches the search term
-                        if (shortcut.keys.toLowerCase().includes(word) || 
-                            shortcut.action.toLowerCase().includes(word) ||
-                            shortcut.category.toLowerCase().includes(word) ||
-                            (shortcut.searchTerms && shortcut.searchTerms.includes(word))) {
-                            return true;
-                        }
+        return new Promise((resolve, reject) => {
+            fetch('blendershortcuts.txt')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch text: ${response.status}`);
                     }
-                    return false;
-                });
-                
-                if (filteredShortcuts.length > 0) {
-                    const uniqueShortcuts = deduplicateShortcuts(filteredShortcuts);
-                    displayFallbackResults(uniqueShortcuts);
-                } else {
+                    return response.text();
+                })
+                .then(text => {
+                    const textShortcuts = parseShortcutsText(text);
+                    console.log('Successfully loaded fallback text data');
+                    
+                    // Process search with text file data
+                    const queryLower = processedQuery ? processedQuery.toLowerCase() : query.toLowerCase();
+                    const searchWords = queryLower.split(/\s+/).filter(word => word.trim().length > 0);
+                    
+                    // Filter shortcuts based on search terms
+                    const filteredShortcuts = textShortcuts.filter(shortcut => {
+                        for (const word of searchWords) {
+                            if (word.length <= 1) continue; // Skip very short terms
+                            
+                            // Check if any part of the shortcut matches the search term
+                            if (shortcut.keys.toLowerCase().includes(word) || 
+                                shortcut.action.toLowerCase().includes(word) ||
+                                shortcut.category.toLowerCase().includes(word) ||
+                                (shortcut.searchTerms && shortcut.searchTerms.includes(word))) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    });
+                    
+                    if (filteredShortcuts.length > 0) {
+                        const uniqueShortcuts = deduplicateShortcuts(filteredShortcuts);
+                        displayFallbackResults(uniqueShortcuts);
+                        resolve();
+                    } else {
+                        searchResults.innerHTML = `
+                            <div class="no-results">
+                                <p>No shortcuts found for "${query}" in any data source.</p>
+                                <p>Try a different search term or check your spelling.</p>
+                            </div>
+                        `;
+                        resolve(); // Still resolve since this is not an error condition
+                    }
+                })
+                .catch(error => {
+                    console.error('Fallback text search failed:', error);
                     searchResults.innerHTML = `
                         <div class="no-results">
                             <p>No shortcuts found for "${query}" in any data source.</p>
+                            <p>Try a different search term or check your spelling.</p>
                         </div>
                     `;
-                }
-            })
-            .catch(error => {
-                console.error('Fallback text search failed:', error);
-                searchResults.innerHTML = `
-                    <div class="no-results">
-                        <p>No shortcuts found for "${query}" in any data source.</p>
-                        <p>Error details: ${error.message}</p>
-                    </div>
-                `;
-            });
+                    reject(error);
+                });
+        });
     }
     
     // New function to display results from the fallback source

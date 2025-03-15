@@ -1,4 +1,4 @@
-General Shortcuts
+
 A: Select all / Deselect all
 B: Box select
 C: Circle select
@@ -44,8 +44,6 @@ Ctrl + Space: Toggle tool settings
 Shift + W: Toggle gizmo visibility
 Ctrl + Alt + Space: Toggle fullscreen area
 Ctrl + B: Border select (in Object mode)
-
-Viewport Navigation
 Middle Mouse Button (MMB): Rotate view
 Shift + MMB: Pan view
 Ctrl + MMB or Scroll Wheel: Zoom view
@@ -65,8 +63,6 @@ Shift + F: Walk/Fly mode
 Ctrl + Alt + Q: Toggle quad view
 Shift + B: Zoom to box
 Alt + Home: View all objects in all viewports
-
-Object Mode
 Ctrl + A: Apply transformations
 Ctrl + J: Join objects
 M: Move to collection
@@ -82,8 +78,6 @@ Alt + P: Clear parent
 Ctrl + Shift + P: Pin object
 Ctrl + Numpad +: Increase subdivision level
 Ctrl + Numpad -: Decrease subdivision level
-
-Edit Mode
 Ctrl + R: Loop cut
 K: Knife tool
 I: Inset face
@@ -114,10 +108,8 @@ Shift + G: Select similar
 Ctrl + Shift + Alt + M: Merge by distance
 Shift + Ctrl + E: Un-subdivide
 Alt + F: Fill
-
-Sculpt Mode
 D: Dynamic topology toggle
-Shift + D: Duplicate brush
+Shift + D: Duplicate
 F: Adjust brush size
 Shift + F: Adjust brush strength
 Ctrl: Smooth brush (hold)
@@ -145,10 +137,13 @@ K: Set keyframe menu
 Alt + K: Clear keyframe
 Shift + K: Set keyframe for selected channels
 Ctrl + K: Add keyframe menu
-]: Go to next keyframe
-[: Go to previous keyframe
+]: Select right keyframes
+[: Select left keyframes
 Alt + ]: Go to next marker
 Alt + [: Go to previous marker
+
+D + LMB: Annotate/draw[][][]
+D + RMB: Remove annotation/drawings
 
 Rendering
 F12: Render image

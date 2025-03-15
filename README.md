@@ -14,6 +14,7 @@ BlendSearch is a fast, efficient web application designed to help Blender users 
 - **Responsive Design**: Works on desktop and mobile devices
 - **Dark Mode**: Toggle between light and dark themes (can't live without dark mode 😉!)
 - **Multiple Data Sources**: Falls back to alternative sources if primary data is unavailable
+- **Up-to-date**: Shortcuts are compatible with Blender 4.3
 
 ## How to Use
 
@@ -33,6 +34,8 @@ BlendSearch uses multiple data sources to find shortcuts:
 2. Community-compiled resources (fallback source)
 
 The application will clearly indicate when it's using fallback data sources that may be less accurate.
+
+**Note**: All shortcuts are verified to work with Blender 4.3. Most shortcuts will also work with earlier versions of Blender, but some may have changed since previous releases.
 
 ## Technology
 
