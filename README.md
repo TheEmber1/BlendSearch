@@ -2,8 +2,7 @@
 
 BlendSerch is a fast, efficient web application designed to help Blender users quickly find keyboard shortcuts. Can't remember a Blender shortcut? Just search for it!
 
-![BlendSerch Screenshot](screenshots/screenshot.png)
-*(Consider adding a screenshot of your application here)*
+![BlendSerch Screenshot](Screenshots/Screenshot%202025-03-15%20112854.png)
 
 ## Features
 
