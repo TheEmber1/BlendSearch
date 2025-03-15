@@ -39,7 +39,7 @@ Alt + R: Clear rotation
 Alt + S: Clear scale
 Ctrl + Alt + Shift + C: Set origin menu
 Shift + R: Repeat last command
-Shift + F: Fly navigation mode
+Shift + `: Fly navigation mode
 Ctrl + Space: Toggle tool settings
 Shift + W: Toggle gizmo visibility
 Ctrl + Alt + Space: Toggle fullscreen area
@@ -108,6 +108,7 @@ Shift + G: Select similar
 Ctrl + Shift + Alt + M: Merge by distance
 Shift + Ctrl + E: Un-subdivide
 Alt + F: Fill
+F: Fill face (or edge)
 D: Dynamic topology toggle
 Shift + D: Duplicate
 F: Adjust brush size
