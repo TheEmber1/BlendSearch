@@ -1,5 +1,5 @@
 View:
-Rotate: MMB + Drag
+Rotate 3D view: MMB + Drag
 Zoom: Mousewheel
 Pan: Shift + MMB + Drag
 Select: LMB (RMB optional)
