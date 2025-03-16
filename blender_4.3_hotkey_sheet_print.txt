@@ -19,6 +19,11 @@ Redo: Shift + Ctrl + Z
 
 Navigation:
 Views Pie Menu: ` + Drag
+Fly Navigation: Shift + ` (tilda)
+Move in Fly Navigation: W/A/S/D/Q/E
+Change Fly Navigation Speed: Mousewheel
+Gravity Toggle in Fly Navigation: G
+Jump to object in Fly Navigation: Space
 Front View: Numpad 1
 Center Selected: Numpad ,
 Right View: Numpad 3
