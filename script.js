@@ -33,7 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Restore checkbox state if it was set
     if (webSearchState === 'true') {
         webSearchCheckbox.checked = true;
-        sessionStorage.removeItem('webSearchState'); // Clear after using
+    } else {
+        webSearchCheckbox.checked = false;
     }
     
     // Handle search form submission
