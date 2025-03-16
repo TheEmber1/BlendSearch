@@ -347,6 +347,26 @@ footer {
 .search-term {
     font-weight: bold;
     color: var(--main-color);
+    transition: font-size 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.search-term.small {
+    font-size: 1.2rem;
+}
+
+.search-term.medium {
+    font-size: 1.5rem;
+}
+
+.search-term.large {
+    font-size: 1.8rem;
+}
+
+.search-term.x-small {
+    font-size: 1rem;
 }
 
 .back-button {
@@ -755,4 +775,35 @@ footer {
     .search-container {
         padding: 1.5rem;
     }
+}
+
+/* Search tip styling */
+.search-tip {
+    background-color: rgba(78, 61, 240, 0.05);
+    border-left: 3px solid var(--main-color);
+    padding: 0.75rem 1rem;
+    margin-top: 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #666;
+    display: none; /* Initially hidden */
+}
+
+/* Character limit notification styling */
+.char-limit-notification {
+    background-color: rgba(78, 61, 240, 0.05);
+    border-left: 3px solid var(--main-color);
+    padding: 0.75rem 1rem;
+    margin-top: 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    display: none; /* Initially hidden */
+}
+
+.char-limit-notification i {
+    color: red;
 }

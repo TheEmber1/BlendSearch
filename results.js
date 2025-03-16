@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const backButton = document.getElementById('back-button');
     const themeToggle = document.getElementById('theme-toggle');
     
+    // Configurable values
+    const MAX_DISPLAY_LENGTH = 43;
+    
     // Initialize theme
     initTheme();
     
@@ -11,8 +14,13 @@ document.addEventListener('DOMContentLoaded', function() {
     themeToggle.addEventListener('click', toggleTheme);
     
     // Get the search query and preferences from localStorage
-    const query = localStorage.getItem('searchQuery') || '';
+    let query = localStorage.getItem('searchQuery') || '';
     const webSearchEnabled = localStorage.getItem('webSearchEnabled') === 'true';
+    
+    // Limit the search term to a maximum of MAX_DISPLAY_LENGTH characters
+    if (query.length > MAX_DISPLAY_LENGTH) {
+        query = query.substring(0, MAX_DISPLAY_LENGTH) + '...';
+    }
     searchTerm.textContent = query;
     
     // Add debugging to check if query is being received
@@ -278,6 +286,23 @@ document.addEventListener('DOMContentLoaded', function() {
             icon.className = 'fas fa-sun';
         } else {
             icon.className = 'fas fa-moon';
+        }
+    }
+    
+    // Adjust font size based on query length
+    function adjustFontSize(query) {
+        if (query.length > 70) {
+            searchTerm.classList.add('x-small');
+            searchTerm.classList.remove('small', 'medium', 'large');
+        } else if (query.length > 50) {
+            searchTerm.classList.add('small');
+            searchTerm.classList.remove('medium', 'large', 'x-small');
+        } else if (query.length > 30) {
+            searchTerm.classList.add('medium');
+            searchTerm.classList.remove('small', 'large', 'x-small');
+        } else {
+            searchTerm.classList.add('large');
+            searchTerm.classList.remove('small', 'medium', 'x-small');
         }
     }
 });

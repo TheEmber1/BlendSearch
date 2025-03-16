@@ -5,6 +5,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const recentSearchesContainer = document.getElementById('recent-searches-container');
     const recentSearchesDiv = document.getElementById('recent-searches');
     const themeToggle = document.getElementById('theme-toggle');
+    const searchTip = document.getElementById('search-tip');
+    const charLimitNotification = document.getElementById('char-limit-notification');
+    
+    // Configurable values
+    const MAX_QUERY_LENGTH = 35;
+    const MAX_WORDS_BEFORE_TIP = 3;
     
     // Initialize theme from localStorage or default to light
     initTheme();
@@ -60,6 +66,24 @@ document.addEventListener('DOMContentLoaded', function() {
     searchInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             performSearch();
+        }
+    });
+    
+    // Show search tip for long sentences
+    searchInput.addEventListener('input', function() {
+        const query = searchInput.value.trim();
+        if (query.split(/\s+/).length > MAX_WORDS_BEFORE_TIP) {
+            searchTip.style.display = 'block';
+        } else {
+            searchTip.style.display = 'none';
+        }
+        
+        // Limit input to MAX_QUERY_LENGTH characters
+        if (query.length > MAX_QUERY_LENGTH) {
+            searchInput.value = query.substring(0, MAX_QUERY_LENGTH);
+            charLimitNotification.style.display = 'flex';
+        } else {
+            charLimitNotification.style.display = 'none';
         }
     });
     
