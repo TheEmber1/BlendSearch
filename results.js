@@ -118,15 +118,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const queryLower = query.toLowerCase();
+        const queryWords = queryLower.split(/\s+/).filter(word => word.trim().length > 0);
+        
+        // Remove common meaningless words
+        const meaninglessWords = ['how', 'to', 'do', 'will', 'i', 'can', 'the', 'in', 'blender', 'shortcut', 'shortcuts', 'keyboard', 'key', 'keys', 'what', 'is', 'for', 'with', 'using', 'a', 'an', 'where', 'when', 'which', 'button', 'press', 'need', 'want', 'would', 'should'];
+        const filteredQueryWords = queryWords.filter(word => !meaninglessWords.includes(word));
         
         // Debugging: Log the query
         console.log('Query:', query);
+        console.log('Filtered Query Words:', filteredQueryWords);
         
         // Filter shortcuts based on search term in action, keys, or searchTerms
         const filteredShortcuts = shortcuts.filter(shortcut => 
-            shortcut.action.toLowerCase().includes(queryLower) ||
-            shortcut.keys.toLowerCase().includes(queryLower) ||
-            shortcut.searchTerms.toLowerCase().includes(queryLower)
+            filteredQueryWords.some(word => 
+                shortcut.action.toLowerCase().includes(word) ||
+                shortcut.keys.toLowerCase().includes(word) ||
+                shortcut.searchTerms.toLowerCase().includes(word)
+            )
         );
         
         // Debugging: Log the filtered shortcuts
