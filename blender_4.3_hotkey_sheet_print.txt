@@ -1,0 +1,444 @@
+View:
+Rotate: MMB + Drag
+Zoom: Mousewheel
+Pan: Shift + MMB + Drag
+Select: LMB (RMB optional)
+
+General:
+Animation Playback: Space*
+Rename Object: F2
+Search: F3
+Repeat Last Action: Shift + R
+Delete: X
+Jump to Object on Hover: Alt + Q
+Join Objects: Ctrl + J
+Next/Previous Workspace: Ctrl + Page Up/Down
+Undo: Ctrl + Z
+Open Preferences: Ctrl + ,
+Redo: Shift + Ctrl + Z
+
+Navigation:
+Views Pie Menu: ` + Drag
+Front View: Numpad 1
+Center Selected: Numpad ,
+Right View: Numpad 3
+Toggle Maximize Area: Ctrl + Space
+Bottom View: Ctrl + Numpad 7
+Toggle Full Screen Area: Ctrl + Alt + Space
+Back View: Ctrl + Numpad 1
+Toggle X-Ray View: Alt + Z
+Left View: Ctrl + Numpad 3
+Toggle Wireframe View: Shift + Z
+Walk Navigation: Shift + `
+Shading Pie Menu: Z
+Show Overlays: Alt + Shift + Z
+Relative View Axis Switching: Alt + Drag MMB
+Top View: Numpad 7
+Toggle Clipping Border: Alt + B
+Toggle Quad View: Ctrl + Alt + Q
+
+Transform:
+Move (Grab): G
+Transform with locked Axis: G/R/S + MMB
+Move along global axis: G + X/Y/Z
+Duplicate: Shift + D
+Move along local axis: G + XX/YY/ZZ
+Duplicate Linked: Alt + D
+Scale: S
+Apply Transform: Ctrl + A
+Scale along global axis: S + X/Y/Z
+Reset Position: Alt + G
+Scale along local axis: S + XX/YY/ZZ
+Reset Rotation: Alt + R
+Rotate: R
+Reset Scale: Alt + S
+Rotate along global axis: R + X/Y/Z
+Snapping Toggle: Shift + Tab
+Rotate along local axis: R + XX/YY/ZZ
+Proportional Editing Toggle: O
+Free Rotate: R + R
+Set Snap Base: B
+
+Selection:
+Select: LMB
+Select Grouped: Shift + G
+Select All: A
+Invert Selection: Ctrl + I
+Deselect All: Alt + A (doubletap A)
+Select Linked: Shift + L
+Border Select: B or Drag LMB
+Circle Select: C
+Pick from Overlapping: Alt + LMB
+
+Edit/Object Mode: Tab
+All Modes (Pie Menu): Ctrl + Tab
+
+Menus:
+Tool Shelf Toggle: T
+Quick Favorites: Q
+Sidebar Toggle: N
+Add Menu: Shift + A
+Object Context Menu: RMB
+Pivot Pie Menu: .
+Orientation Pie Menu: ,
+Snapping Pie Menu: Shift + S
+
+Editors:
+3D Viewport: Shift + F5
+Graph Editor/Drivers: Shift + F6
+Image/UV Editor: Shift + F10
+Text Editor: Shift + F11
+Shader Editor: Shift + F3
+Python Console: Shift + F4
+Comp./Text./Geo Node Editor: Shift + F3
+Outliner: Shift + F9
+Video Sequencer: Shift + F8
+Properties: Shift + F7
+Movie Clip Editor: Shift + F2
+Dope Sheet/Timeline: Shift + F12
+File Browser: Shift + F1
+
+Hide/Unhide:
+Hide: H
+Hide Unselected: Shift + H
+Unhide All: Alt + H
+Local View: /
+
+Relationships:
+Set Parent: Ctrl + P
+Link/Transfer Data: Ctrl + L
+Clear Parent: Alt + P
+
+Camera:
+Camera View: Numpad 0
+Set Active Object as Camera: Ctrl + Numpad 0
+Align Camera to View: Ctrl + Alt + Numpad 0
+
+Save:
+Save: Ctrl + S
+New File: Ctrl + N
+Save As: Ctrl + Shift + S
+Save Incremental: Ctrl + Alt + S
+File Context Menu: F4
+Quit Blender: Ctrl + Q
+
+Render:
+Render Image: F12
+Set Render Region: Ctrl + B
+Render Animation: Ctrl + F12
+Play Rendered Animation: Ctrl + F11
+Reset Render Region: Ctrl + Alt + B
+
+Selection (Edit Mode):
+Vertex Selection: 1
+Select Edge/Face Loop: Alt + LMB
+Edge Selection: 2
+Select Edge Ring: Ctrl + Alt + LMB
+Face Selection: 3
+Slide Edge Selection: G + G
+Select Linked: Ctrl + L
+Select Mirror: Ctrl + Shift + M
+Select Linked under Cursor: L
+Path Selection: Ctrl + LMB
+Grow/Shrink Selection: Ctrl + +/-
+
+Align View:
+Align TopView to active face: Shift + Numpad 7
+Align BackView to active face: Shift + Ctrl + Numpad 1
+Align BottomView to active face: Shift + Ctrl + Numpad 7
+Align FrontView to active face: Shift + Numpad 1
+Align RightView to active face: Shift + Numpad 3
+Align LeftView to active face: Shift + Ctrl + Numpad 3
+
+Tools:
+Extrude: E
+To Sphere: Shift + Alt + S
+Bevel: Ctrl + B
+Split: Y
+Loopcut: Ctrl + R
+Rip: V
+Knife Cut: K
+Triangulate: Ctrl + T
+Inset: I
+Merge Selected: M
+Separate: P
+Recalculate Normals: Shift + N
+Unwrap: U
+Split Menu: Alt + M
+Fill Face: F
+Connect Vertex Path: J
+Shrink/Fatten: Alt + S
+Extrude Menu: Alt + E
+Rip Fill: Alt + V
+Shear: Shift + Ctrl + Alt + S
+Vertex/Edge/Face Menu: Ctrl + E
+
+Proportional Editing:
+Proportional Edit: O
+Prop. Edit Falloff Pie Menu: Shift + O
+Proportional Edit Connected: Alt + O
+Prop. Edit Radius Size: Page Up/Down or Scroll
+
+Assign to Vertex Group: Ctrl + G
+Remove from Vertex Group: Ctrl + Alt + G
+
+Hide/Unhide (Edit Mode):
+Hide: H
+Hide Unselected: Shift + H
+Unhide: Alt + H
+
+Brushes (Sculpt Mode):
+Brush Size: F
+Switch Sculpt Object: Hover + Alt + Q
+Brush Strength: Shift + F
+Brush Angle: Ctrl + F
+Set Transform Pivot Gizmo: Shift + RMB
+
+Mask (Sculpt Mode):
+Mask: M
+Expand Mask by Curvature: Shift + Alt + A
+Clear Mask: Alt + M
+Expand Mask by Topology: Shift + A
+Invert Mask: Ctrl + I
+Box Mask: B
+
+Brushes (Sculpt Mode):
+Draw: V
+Smooth: S or Shift + Drag
+Grab: G
+Clay Strips: C
+Inflate: I
+Crease Polish: Shift + C
+Snake Hook: K
+Pinch: P
+Scrape: Shift + T
+Brush Assets Search: Shift + Space
+
+Topology (Sculpt Mode):
+Remesh: Ctrl + R
+Dyntopo Flood Fill: Ctrl + R
+Incr./Decr. Multires Levels: Alt + 1/2
+Remesh Preview: R
+
+Face Sets Pie Menu: Alt + W
+Hide Active Face Set: H
+Grow/Shrink Face Set: Ctrl + W / Ctrl + Alt + W
+Show all Face Sets: Alt + H
+Hide Inactive Face Sets: Shift + H
+
+Shader Editor, Geo Nodes, Compositing:
+Group: Ctrl + G
+Delete with Reconnect: Ctrl + X
+Ungroup: Ctrl + Alt + G
+Insert Reroute: Shift + RMB + Drag
+Edit Group Toggle: Tab
+Hide Unused Sockets: Ctrl + H
+Join in New Frame: Ctrl + J
+Minimize Node: H
+Cut Links: Ctrl + RMB + Drag
+Mute Node: M
+Mute Links: Ctrl + Alt + RMB + Drag
+Skip Auto Node Attachment: Alt
+
+Compositing:
+Background Image Move: Alt + MMB
+Background Image Zoom in: Alt + V
+Background Image Zoom out: V
+
+Image Editor:
+New Image: Alt + N
+Save Image: Alt + S
+Open Image: Alt + O
+Save Image As: Shift + Alt + S
+
+Mark Seam: Ctrl + E
+Stitch: Alt + V
+Select Split: Y
+Grow/Shrink Selection: Ctrl + +/-
+Pin: P
+Unpin: Alt + P
+
+Painting:
+Brush Assets Search: Shift + Space
+Stroke Method: Alt + E
+Sample Color: Shift + X
+Brush Colors Flip: X
+Brush Size: F
+Select Faces for Face Mask: Alt + LMB
+Brush Strength: Shift + F
+Expand Face Mask Selection: Alt + Shift + LMB
+
+Weight Painting:
+Invert Brush: Ctrl + Drag
+Set Weight: Ctrl + X
+Gradient: Shift + A
+Select Linked under Cursor: L
+Radial Gradient: Shift + Alt + A
+Select Bones: Ctrl + Shift + LMB
+Sample Weight: Shift + X
+
+General (Animation):
+Insert Keyframe: I
+Delete Keyframes: Alt + I
+Insert Keyframe Menu: K
+List of Bones under Cursor: Alt + LMB
+
+Timeline, Dopesheet and Graph Editor:
+Play/Stop Animation: Space
+Select Linked: L
+Play/Stop Animation Reverse: Ctrl + Shift + Space
+Jump to Keyframes: Ctrl + G
+Set Preview Range: P + Drag LMB
+Set Keyframe Handle Type: V
+Clear Preview Range: Alt + P
+Set Keyframe Interpolation: T
+Next/Previous Frame: Left/Right
+Set F-Curve Extrapolation: Shift + E
+Jump to first/last frame: Shift + Left/Right
+Add Time Marker: M
+Toggle Frames/Seconds: Ctrl + T
+Rename Marker: F2
+Mirror Keyframes: Ctrl + M
+Find Channels: Ctrl + F
+Sample Keyframes: Shift + Alt + O
+View Selected: Numpad ,
+Select More/Less: Ctrl + +/-
+
+Graph Editor:
+Add F-Curve Modifier: Shift + Ctrl + M
+Smooth Curve (Legacy): Alt + O
+Hide Channels: H
+Set Keyframe Easing Type: Ctrl + E
+Unhide Channels: Alt + H
+Smooth Curve: Alt + S
+Blend Curve: Shift + W
+Toggle Channel Setting: Alt + D
+Frame Selected Channels: Numpad .
+
+Add Driver: Ctrl + D
+Remove Driver: Ctrl + Alt + D
+
+Nonlinear Animation:
+Add Action Strip: Shift + A
+Split Strips: Y
+Add Transition: Shift + T
+Toggle Muting: H
+Add Sound Clip: Shift + K
+Swap Strips: Alt + F
+Add Meta-Strips: Ctrl + G
+Remove Meta-Strips: Ctrl + Alt + G
+Move Strips Up/Down: Page Up/Down
+
+Video Sequencer:
+Cut Strips: K
+View Frame: Numpad 0
+Mute Strips: H
+View Selected: Numpad ,
+Unmute Strips: Alt + H
+Snap Strips to Frame: Shift + S
+Toggle Meta-Strip: Tab
+Slip Strip Contents: S
+Make Meta-Strip: Ctrl + G
+Remove Gaps: Backspace
+UnMeta-Strip: Ctrl + Alt + G
+Insert Gaps: Shift + =
+
+Draw Mode:
+Brush Assets Search: Shift + Space
+Interpolate: Ctrl + Shift + E
+Brush Size: F
+Change Active Layer: Y
+Brush Strength: Shift + F
+Sample Color: Shift + X
+Adjust stroke extension: Mousewheel
+
+Sculpt Mode:
+Select Box: B
+Stroke Selection: 2
+Select Circle: C
+Stroke Section Selection: 3
+Select All: A
+Brush Asset Search: Shift + Space
+Select None: Alt + A
+Brush Size: F
+Invert Selection: Ctrl + I
+Brush Strength: Shift + F
+Point Selection: 1
+Auto-Masking Pie Menu: Shift + Alt + A
+
+Edit Mode:
+Point Selection: 1
+Scale: S
+Stroke Selection: 2
+Extrude: E
+Stroke Section Selection: 3
+Radius: Alt + S
+Move: G
+Rotate: R
+Bend: Shift + W
+Shear: Shift + Ctrl + Alt + S
+
+Grease Pencil:
+New Collection: C
+Link to Collection: Shift + M
+Delete Collection: X
+Move to Collection: M
+Parent Objects: Shift + Drag/Drop
+
+Next Folder: Alt + Right
+Create New Directory: I
+Previous Folder: Alt + Left
+Parent File: Alt + Up
+Add Bookmark: Ctrl + B
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

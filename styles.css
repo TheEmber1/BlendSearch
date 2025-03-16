@@ -379,6 +379,7 @@ footer {
 .shortcut-title {
     font-weight: bold;
     margin-bottom: 0.5rem;
+    color: var(--text-color);
 }
 
 .shortcut-keys {

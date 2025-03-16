@@ -144,4 +144,200 @@ document.addEventListener('DOMContentLoaded', function() {
             icon.className = 'fas fa-moon';
         }
     }
+
+    // Fetch shortcuts with error handling and fallback to the new text file
+    function fetchShortcuts() {
+        return new Promise((resolve, reject) => {
+            // Commented out the JSON fetch part
+            /*
+            fetch('blendershortcuts.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch JSON: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Successfully loaded JSON data');
+                    // Mark that we're using the primary data source
+                    sessionStorage.setItem('dataSource', 'json');
+                    resolve(data);
+                })
+                .catch(jsonError => {
+                    console.warn('JSON fetch failed, trying official text file instead:', jsonError);
+            */
+                    // Fallback to official text file
+                    fetch('blender_4.3_hotkey_sheet_print.txt')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`Failed to fetch official text: ${response.status}`);
+                            }
+                            return response.text();
+                        })
+                        .then(text => {
+                            const shortcuts = parseShortcutsText(text);
+                            console.log('Successfully loaded official text data');
+                            // Mark that we're using the secondary data source
+                            sessionStorage.setItem('dataSource', 'official_text');
+                            resolve(shortcuts);
+                        })
+                        .catch(officialTextError => {
+                            console.error('Official text fetch also failed:', officialTextError);
+                            
+                            // Last resort: use hardcoded basic shortcuts
+                            const basicShortcuts = getBasicShortcuts();
+                            console.log('Using hardcoded basic shortcuts');
+                            // Mark that we're using the emergency data source
+                            sessionStorage.setItem('dataSource', 'hardcoded');
+                            resolve(basicShortcuts);
+                        });
+            // });
+        });
+    }
+
+    // Process natural language queries into search terms
+    function processNaturalLanguageQuery(query) {
+        if (!query) return '';
+        
+        // Convert to lowercase
+        let processedQuery = query.toLowerCase();
+        
+        // Remove common words that don't contribute to meaning
+        const removeWords = [
+            'how', 'to', 'do', 'i', 'can', 'the', 'in', 'blender', 'shortcut', 'shortcuts',
+            'keyboard', 'key', 'keys', 'what', 'is', 'for', 'with', 'using', 'a', 'an',
+            'where', 'when', 'which', 'button', 'press', 'need', 'want', 'would', 'should'
+        ];
+        
+        // Create regex pattern for word boundaries
+        const pattern = new RegExp('\\b(' + removeWords.join('|') + ')\\b', 'gi');
+        processedQuery = processedQuery.replace(pattern, '');
+        
+        // Add synonyms and related terms
+        const synonyms = {
+            'duplicate': ['copy', 'clone'],
+            'delete': ['remove', 'erase'],
+            'select': ['choose', 'pick'],
+            'move': ['grab', 'drag'],
+            'rotate': ['turn', 'spin'],
+            'scale': ['resize', 'stretch'],
+            'extrude': ['extend', 'pull']
+        };
+        
+        for (const [key, values] of Object.entries(synonyms)) {
+            if (processedQuery.includes(key)) {
+                processedQuery += ' ' + values.join(' ');
+            }
+        }
+        
+        return processedQuery;
+    }
+
+    // Fuzzy search algorithm
+    function fuzzySearch(term, query) {
+        const termLower = term.toLowerCase();
+        const queryLower = query.toLowerCase();
+        let tIndex = 0;
+        let qIndex = 0;
+        
+        while (tIndex < termLower.length && qIndex < queryLower.length) {
+            if (termLower[tIndex] === queryLower[qIndex]) {
+                qIndex++;
+            }
+            tIndex++;
+        }
+        
+        return qIndex === queryLower.length;
+    }
+
+    // Display search results - updated to handle fuzzy search
+    function displayResults(shortcuts, query, processedQuery) {
+        if (!query) {
+            searchResults.innerHTML = `
+                <div class="no-results">
+                    <p>Please enter a search query.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        const queryLower = processedQuery ? processedQuery.toLowerCase() : query.toLowerCase();
+        const searchWords = queryLower.split(/\s+/).filter(word => word.trim().length > 0);
+        
+        // If no searchable words remain after filtering
+        if (searchWords.length === 0) {
+            searchResults.innerHTML = `
+                <div class="no-results">
+                    <p>No shortcuts found for "${query}"</p>
+                </div>
+            `;
+            return;
+        }
+        
+        // Filter shortcuts based on search terms
+        const filteredShortcuts = shortcuts.filter(shortcut => {
+            for (const word of searchWords) {
+                if (word.length <= 1) continue; // Skip very short terms
+                
+                // Check if any part of the shortcut matches the search term using fuzzy search
+                if (fuzzySearch(shortcut.keys, word) || 
+                    fuzzySearch(shortcut.action, word) ||
+                    fuzzySearch(shortcut.category, word) ||
+                    (shortcut.searchTerms && fuzzySearch(shortcut.searchTerms, word))) {
+                    return true;
+                }
+            }
+            return false;
+        });
+        
+        // Display the results
+        if (filteredShortcuts.length === 0) {
+            searchResults.innerHTML = `
+                <div class="no-results">
+                    <p>No shortcuts found for "${query}"</p>
+                    <div class="searching-docs-message">
+                        <p>Looking for shortcuts in alternative sources...</p>
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            `;
+            
+            // If no results found in JSON, try searching in the text file
+            if (sessionStorage.getItem('dataSource') === 'json') {
+                // Add timeout to prevent infinite loading state
+                const fallbackTimeout = setTimeout(() => {
+                    if (document.querySelector('.searching-docs-message')) {
+                        searchResults.innerHTML = `
+                            <div class="no-results">
+                                <p>No shortcuts found for "${query}" in any data source.</p>
+                                <p>Try a different search term or check your spelling.</p>
+                            </div>
+                        `;
+                    }
+                }, 5000); // 5 seconds timeout
+                
+                fetchFallbackShortcuts(query, processedQuery)
+                    .then(() => {
+                        clearTimeout(fallbackTimeout); // Clear timeout if fetch completes normally
+                    })
+                    .catch(error => {
+                        clearTimeout(fallbackTimeout); // Clear timeout if fetch fails
+                        console.error('Fallback fetch error:', error);
+                        searchResults.innerHTML = `
+                            <div class="no-results">
+                                <p>No shortcuts found for "${query}" in any data source.</p>
+                                <p>Try a different search term or check your spelling.</p>
+                            </div>
+                        `;
+                    });
+            }
+            return;
+        }
+        
+        // Apply improved deduplication before displaying
+        const uniqueShortcuts = deduplicateShortcuts(filteredShortcuts);
+        
+        // Display the unique results
+        displayShortcutResults(uniqueShortcuts);
+    }
 });

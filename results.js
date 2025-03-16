@@ -59,10 +59,11 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'index.html';
     });
     
-    // Fetch shortcuts with error handling and multiple fallbacks
+    // Fetch shortcuts with error handling and fallback to the new text file
     function fetchShortcuts() {
         return new Promise((resolve, reject) => {
-            // First try to load the JSON file
+            // Commented out the JSON fetch part
+            /*
             fetch('blendershortcuts.json')
                 .then(response => {
                     if (!response.ok) {
@@ -77,25 +78,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     resolve(data);
                 })
                 .catch(jsonError => {
-                    console.warn('JSON fetch failed, trying text file instead:', jsonError);
-                    
-                    // Fallback to text file
-                    fetch('blendershortcuts.txt')
+                    console.warn('JSON fetch failed, trying official text file instead:', jsonError);
+            */
+                    // Fallback to official text file
+                    fetch('blender_4.3_hotkey_sheet_print.txt')
                         .then(response => {
                             if (!response.ok) {
-                                throw new Error(`Failed to fetch text: ${response.status}`);
+                                throw new Error(`Failed to fetch official text: ${response.status}`);
                             }
                             return response.text();
                         })
                         .then(text => {
                             const shortcuts = parseShortcutsText(text);
-                            console.log('Successfully loaded text data');
-                            // Mark that we're using the fallback data source
-                            sessionStorage.setItem('dataSource', 'text');
+                            console.log('Successfully loaded official text data');
+                            // Mark that we're using the secondary data source
+                            sessionStorage.setItem('dataSource', 'official_text');
                             resolve(shortcuts);
                         })
-                        .catch(textError => {
-                            console.error('Text fetch also failed:', textError);
+                        .catch(officialTextError => {
+                            console.error('Official text fetch also failed:', officialTextError);
                             
                             // Last resort: use hardcoded basic shortcuts
                             const basicShortcuts = getBasicShortcuts();
@@ -104,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             sessionStorage.setItem('dataSource', 'hardcoded');
                             resolve(basicShortcuts);
                         });
-                });
+            // });
         });
     }
     
@@ -186,9 +187,43 @@ document.addEventListener('DOMContentLoaded', function() {
         const pattern = new RegExp('\\b(' + removeWords.join('|') + ')\\b', 'gi');
         processedQuery = processedQuery.replace(pattern, '');
         
+        // Add synonyms and related terms
+        const synonyms = {
+            'duplicate': ['copy', 'clone'],
+            'delete': ['remove', 'erase'],
+            'select': ['choose', 'pick'],
+            'move': ['grab', 'drag'],
+            'rotate': ['turn', 'spin'],
+            'scale': ['resize', 'stretch'],
+            'extrude': ['extend', 'pull']
+        };
+        
+        for (const [key, values] of Object.entries(synonyms)) {
+            if (processedQuery.includes(key)) {
+                processedQuery += ' ' + values.join(' ');
+            }
+        }
+        
         return processedQuery;
     }
-    
+
+    // Fuzzy search algorithm
+    function fuzzySearch(term, query) {
+        const termLower = term.toLowerCase();
+        const queryLower = query.toLowerCase();
+        let tIndex = 0;
+        let qIndex = 0;
+        
+        while (tIndex < termLower.length && qIndex < queryLower.length) {
+            if (termLower[tIndex] === queryLower[qIndex]) {
+                qIndex++;
+            }
+            tIndex++;
+        }
+        
+        return qIndex === queryLower.length;
+    }
+
     // Parse text file format
     function parseShortcutsText(text) {
         const lines = text.split('\n');
@@ -225,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return shortcuts;
     }
     
-    // Display search results - updated to handle fallback data source notification
+    // Display search results - updated to handle strict filtering and improved scoring
     function displayResults(shortcuts, query, processedQuery) {
         if (!query) {
             searchResults.innerHTML = `
@@ -249,24 +284,39 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Filter shortcuts based on search terms
-        const filteredShortcuts = shortcuts.filter(shortcut => {
+        // Filter and score shortcuts based on search terms
+        const scoredShortcuts = shortcuts.map(shortcut => {
+            let score = 0;
+            let matches = false;
             for (const word of searchWords) {
                 if (word.length <= 1) continue; // Skip very short terms
                 
-                // Check if any part of the shortcut matches the search term
-                if (shortcut.keys.toLowerCase().includes(word) || 
-                    shortcut.action.toLowerCase().includes(word) ||
-                    shortcut.category.toLowerCase().includes(word) ||
-                    (shortcut.searchTerms && shortcut.searchTerms.includes(word))) {
-                    return true;
+                // Check if any part of the shortcut matches the search term using strict matching
+                if (shortcut.keys.toLowerCase().includes(word)) {
+                    score += 10;
+                    matches = true;
+                }
+                if (shortcut.action.toLowerCase().includes(word)) {
+                    score += 15;
+                    matches = true;
+                }
+                if (shortcut.category.toLowerCase().includes(word)) {
+                    score += 5;
+                    matches = true;
+                }
+                if (shortcut.searchTerms && shortcut.searchTerms.toLowerCase().includes(word)) {
+                    score += 2;
+                    matches = true;
                 }
             }
-            return false;
-        });
+            return matches ? { ...shortcut, score } : null;
+        }).filter(shortcut => shortcut !== null);
+        
+        // Sort shortcuts by score in descending order
+        const sortedShortcuts = scoredShortcuts.sort((a, b) => b.score - a.score);
         
         // Display the results
-        if (filteredShortcuts.length === 0) {
+        if (sortedShortcuts.length === 0) {
             searchResults.innerHTML = `
                 <div class="no-results">
                     <p>No shortcuts found for "${query}"</p>
@@ -310,7 +360,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Apply improved deduplication before displaying
-        const uniqueShortcuts = deduplicateShortcuts(filteredShortcuts);
+        const uniqueShortcuts = deduplicateShortcuts(sortedShortcuts);
         
         // Display the unique results
         displayShortcutResults(uniqueShortcuts);
@@ -390,8 +440,8 @@ document.addEventListener('DOMContentLoaded', function() {
         shortcuts.forEach(shortcut => {
             resultsHTML += `
                 <div class="shortcut-card">
-                    <div class="shortcut-title">${shortcut.action}</div>
                     <div class="shortcut-keys">${shortcut.keys}</div>
+                    <div class="shortcut-title">${shortcut.action}</div>
                 </div>
             `;
         });
@@ -425,31 +475,13 @@ document.addEventListener('DOMContentLoaded', function() {
         filteredShortcuts.forEach(shortcut => {
             resultsHTML += `
                 <div class="shortcut-card">
-                    <div class="shortcut-title">${shortcut.action}</div>
                     <div class="shortcut-keys">${shortcut.keys}</div>
+                    <div class="shortcut-title">${shortcut.action}</div>
                 </div>
             `;
         });
         
         searchResults.innerHTML = resultsHTML;
-    }
-    
-    // Add missing common shortcuts for better search results
-    function addMissingCommonShortcuts(shortcuts) {
-        // Check if we need to add the Shift+A (Add Menu) shortcut
-        const hasAddMenu = shortcuts.some(s => 
-            s.keys.toLowerCase().includes('shift+a') && 
-            s.action.toLowerCase().includes('add menu')
-        );
-        
-        if (!hasAddMenu) {
-            shortcuts.unshift({
-                category: "General Shortcuts",
-                action: "Add Menu (Create New Objects)",
-                keys: "Shift + A",
-                searchTerms: "add menu create new object mesh cube sphere plane light camera shift+a primary add create"
-            });
-        }
     }
     
     // Fetch extra shortcuts (simplified placeholder implementation)
@@ -589,6 +621,24 @@ document.addEventListener('DOMContentLoaded', function() {
         }, shortcuts[0]);
     }
     
+    // Add missing common shortcuts for better search results
+    function addMissingCommonShortcuts(shortcuts) {
+        // Check if we need to add the Shift+A (Add Menu) shortcut
+        const hasAddMenu = shortcuts.some(s => 
+            s.keys.toLowerCase().includes('shift+a') && 
+            s.action.toLowerCase().includes('add menu')
+        );
+        
+        if (!hasAddMenu) {
+            shortcuts.unshift({
+                category: "General Shortcuts",
+                action: "Add Menu (Create New Objects)",
+                keys: "Shift + A",
+                searchTerms: "add menu create new object mesh cube sphere plane light camera shift+a primary add create"
+            });
+        }
+    }
+
     // Theme functionality
     function initTheme() {
         const savedTheme = localStorage.getItem('theme') || 'light';
