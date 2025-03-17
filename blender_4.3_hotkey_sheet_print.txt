@@ -370,7 +370,6 @@ Edit Mode:
 Point Selection: 1
 Scale: S
 Stroke Selection: 2
-Extrude: E
 Stroke Section Selection: 3
 Radius: Alt + S
 Move: G
