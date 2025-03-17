@@ -4,11 +4,12 @@
     --secondary-color: #7b6cf6;
     --bg-color: #f8f9fc;
     --text-color: #333;
+    --text-color-subtle: #666; /* Added subtle text color variable */
     --light-color: #fff;
     --card-bg: #fff;
     --input-border: #e1e5ee;
     --shadow: 0 4px 12px rgba(78, 61, 240, 0.15);
-    --subtle-text: #666;
+    --subtle-text: #b1b1b1;
     --border-color: #e1e5ee;
 }
 
@@ -18,6 +19,7 @@
     --secondary-color: #9e93f5;
     --bg-color: #1a1a1a;
     --text-color: #f0f0f0;
+    --text-color-subtle: #b0b0b0; /* Added subtle text color variable for dark mode */
     --light-color: #2a2a2a;
     --card-bg: #2a2a2a;
     --input-border: #3a3a3a;
@@ -68,14 +70,14 @@ h1 {
 }
 
 .tagline {
-    color: #666;
+    color: var(--text-color-subtle); /* Updated to use variable */
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
     font-style: italic;
 }
 
 .docs-note {
-    color: #777;
+    color: var(--text-color-subtle); /* Updated to use variable */
     font-size: 0.9rem;
     margin-bottom: 1rem;
 }
@@ -161,7 +163,7 @@ h2 {
     cursor: pointer;
     font-size: 0.9rem;
     user-select: none;
-    color: #666;
+    color: var(--text-color-subtle); /* Updated to use variable */
 }
 
 .checkbox-container input {
@@ -221,7 +223,7 @@ h2 {
 
 .recent-tag {
     background-color: rgba(78, 61, 240, 0.05);
-    color: #666;
+    color: var(--text-color-subtle); /* Updated to use variable */
     padding: 0.5rem 1rem;
     border-radius: 20px;
     font-size: 0.9rem;
@@ -245,7 +247,7 @@ h2 {
 h3 {
     font-size: 1rem;
     margin-bottom: 0.8rem;
-    color: #666;
+    color: var(--text-color-subtle); /* Updated to use variable */
 }
 
 .tags {
@@ -276,7 +278,7 @@ h3 {
 footer {
     text-align: center;
     margin-top: 3rem;
-    color: #666;
+    color: var(--text-color-subtle); /* Updated to use variable */
     font-size: 0.9rem;
 }
 
@@ -414,14 +416,14 @@ footer {
 }
 
 .shortcut-description {
-    color: #666;
+    color: var(--text-color-subtle); /* Updated to use variable */
     font-size: 0.9rem;
 }
 
 .no-results {
     text-align: center;
     padding: 2rem;
-    color: #666;
+    color: var(--text-color-subtle); /* Updated to use variable */
 }
 
 /* Web results styling */
@@ -473,7 +475,7 @@ footer {
 
 .web-result-url {
     font-size: 0.8rem;
-    color: #777;
+    color: var(--text-color-subtle); /* Updated to use variable */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -553,7 +555,7 @@ footer {
 
 .deep-search-disclaimer {
     font-size: 0.85rem;
-    color: #777;
+    color: var(--text-color-subtle); /* Updated to use variable */
     font-style: italic;
     margin-bottom: 1rem;
     padding: 0 0.5rem;
@@ -601,7 +603,7 @@ footer {
     margin-bottom: 1rem;
     border-radius: 4px;
     font-size: 0.9rem;
-    color: #666;
+    color: var(--text-color-subtle); /* Updated to use variable */
 }
 
 .info-note {
@@ -611,7 +613,7 @@ footer {
     margin-bottom: 1rem;
     border-radius: 4px;
     font-size: 0.9rem;
-    color: #666;
+    color: var(--text-color-subtle); /* Updated to use variable */
 }
 
 .suggestion {
@@ -648,7 +650,7 @@ footer {
     margin-bottom: 1.5rem;
     border-radius: 8px;
     font-size: 0.85rem;
-    color: #666;
+    color: var(--text-color-subtle); /* Updated to use variable */
     text-align: center;
     border: 1px dashed rgba(78, 61, 240, 0.2);
 }
@@ -701,7 +703,7 @@ footer {
     margin-bottom: 1.5rem;
     border-radius: 8px;
     font-size: 0.85rem;
-    color: #666;
+    color: var(--text-color-subtle); /* Updated to use variable */
     text-align: center;
     border: 1px dashed rgba(78, 61, 240, 0.2);
 }
@@ -785,7 +787,7 @@ footer {
     margin-top: 1rem;
     border-radius: 4px;
     font-size: 0.9rem;
-    color: #666;
+    color: var(--text-color-subtle); /* Updated to use variable */
     display: none; /* Initially hidden */
 }
 
@@ -797,7 +799,7 @@ footer {
     margin-top: 1rem;
     border-radius: 4px;
     font-size: 0.9rem;
-    color: #666;
+    color: var(--text-color-subtle); /* Updated to use variable */
     display: flex;
     align-items: center;
     gap: 0.5rem;
