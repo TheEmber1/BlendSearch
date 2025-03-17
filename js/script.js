@@ -144,14 +144,25 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('recentSearches', JSON.stringify(trimmedSearches));
     }
     
-    // Theme functionality
+    // Enhanced theme functionality
     function initTheme() {
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
     }
     
-    function toggleTheme() {
+    function toggleTheme(event) {
+        // Store mouse position for the animation
+        if (event) {
+            const x = event.clientX;
+            const y = event.clientY;
+            document.documentElement.style.setProperty('--mouse-x', `${x}px`);
+            document.documentElement.style.setProperty('--mouse-y', `${y}px`);
+        }
+        
+        // Add transition class to body
+        document.body.classList.add('theme-transition');
+        
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
         
@@ -159,15 +170,24 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('theme', newTheme);
         
         updateThemeIcon(newTheme);
+        
+        // Remove the transition class after animation completes
+        setTimeout(() => {
+            document.body.classList.remove('theme-transition');
+        }, 600);
     }
     
     function updateThemeIcon(theme) {
-        const icon = themeToggle.querySelector('i');
-        if (theme === 'dark') {
-            icon.className = 'fas fa-sun';
-        } else {
-            icon.className = 'fas fa-moon';
-        }
+        const moonIcon = document.createElement('i');
+        moonIcon.className = 'fas fa-moon';
+        
+        const sunIcon = document.createElement('i');
+        sunIcon.className = 'fas fa-sun';
+        
+        // Clear existing icons and add both
+        themeToggle.innerHTML = '';
+        themeToggle.appendChild(moonIcon);
+        themeToggle.appendChild(sunIcon);
     }
 
     // Fetch shortcuts with error handling and fallback to the new text file
