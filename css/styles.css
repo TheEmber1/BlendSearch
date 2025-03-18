@@ -4,18 +4,12 @@
     --secondary-color: #7b6cf6;
     --bg-color: #f8f9fc;
     --text-color: #333;
-    --text-color-subtle: #666; /* Added subtle text color variable */
     --light-color: #fff;
     --card-bg: #fff;
     --input-border: #e1e5ee;
     --shadow: 0 4px 12px rgba(78, 61, 240, 0.15);
-    --subtle-text: #b1b1b1;
+    --subtle-text: #666;
     --border-color: #e1e5ee;
-    --main-color-rgb: 78, 61, 240; /* RGB version of main color */
-    
-    /* Animation properties */
-    --theme-transition-time: 0.6s;
-    --theme-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Dark theme colors */
@@ -24,66 +18,33 @@
     --secondary-color: #9e93f5;
     --bg-color: #1a1a1a;
     --text-color: #f0f0f0;
-    --text-color-subtle: #b0b0b0; /* Added subtle text color variable for dark mode */
     --light-color: #2a2a2a;
     --card-bg: #2a2a2a;
     --input-border: #3a3a3a;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     --subtle-text: #b0b0b0;
     --border-color: #444;
-    --main-color-rgb: 123, 108, 246; /* RGB version of main color for dark mode */
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    transition: background-color var(--theme-transition-time) var(--theme-transition-easing), 
-                color var(--theme-transition-time) var(--theme-transition-easing), 
-                border-color var(--theme-transition-time) var(--theme-transition-easing),
-                box-shadow var(--theme-transition-time) var(--theme-transition-easing);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
+/* Prevent page flashing by improving the body transition */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
-    position: relative;
-    overflow-x: hidden;
-}
-
-/* Add overlay for theme transition effect - simplified with fade */
-body::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: var(--main-color);
     opacity: 0;
-    pointer-events: none;
-    z-index: 9999;
-    transition: opacity 0.5s ease;
-    mix-blend-mode: overlay;
+    transition: opacity 0.3s ease;
 }
 
-body.theme-transition::after {
-    opacity: 0.2;
-    animation: simple-fade 0.8s ease forwards;
-}
-
-@keyframes simple-fade {
-    0% {
-        opacity: 0.2;
-    }
-    50% {
-        opacity: 0.3;
-    }
-    100% {
-        opacity: 0;
-    }
+body.loaded {
+    opacity: 1;
 }
 
 .container {
@@ -114,14 +75,14 @@ h1 {
 }
 
 .tagline {
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #666;
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
     font-style: italic;
 }
 
 .docs-note {
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #777;
     font-size: 0.9rem;
     margin-bottom: 1rem;
 }
@@ -153,45 +114,76 @@ h2 {
     font-size: 1.8rem;
 }
 
+/* Improved search box state transitions */
 .search-box {
     display: flex;
     position: relative;
     margin-bottom: 2rem;
+    width: 100%;
+    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #search-input {
     flex: 1;
-    padding: 0.8rem 1rem;
+    padding: 1rem 1.2rem;
     border: 2px solid var(--input-border);
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     background-color: var(--card-bg);
     color: var(--text-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02) inset;
+    width: 100%;
 }
 
 #search-input:focus {
     outline: none;
     border-color: var(--main-color);
+    box-shadow: 0 0 0 3px rgba(var(--main-color-rgb), 0.15);
 }
 
+/* Make sure the search button transitions smoothly without causing layout shifts */
 #search-button {
     position: absolute;
-    right: 4px;  /* Changed from 8px to 6px for more spacing from the right */
+    right: 6px;  /* Changed from 8px to 6px for more spacing from the right */
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%) scale(0);
     background: var(--main-color);
     color: white;
     border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none; /* This is causing the button to not be clickable */
+    z-index: 10;
 }
 
-#search-button:hover {
-    background: var(--secondary-color);
+/* Fix search button pointer events */
+.search-box.collapsed #search-input {
+    max-width: 60%;
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-box.expanded #search-input {
+    max-width: 100%;
+    width: 100%;
+    text-align: left;
+    transform: scale(1);
+}
+
+.search-box.expanded #search-button {
+    transform: translateY(-50%) scale(1);
+    opacity: 1;
+    pointer-events: auto; /* Make sure the button is clickable when expanded */
 }
 
 .search-options {
@@ -207,7 +199,7 @@ h2 {
     cursor: pointer;
     font-size: 0.9rem;
     user-select: none;
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #666;
 }
 
 .checkbox-container input {
@@ -216,6 +208,27 @@ h2 {
     cursor: pointer;
     height: 0;
     width: 0;
+}
+
+/* Fix checkbox background in dark mode */
+.checkbox-container .checkmark {
+    background-color: var(--input-border);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    background-color: var(--secondary-color);
+    opacity: 0.3;
+}
+
+/* Theme-specific checkbox styling */
+[data-theme="dark"] .checkbox-container .checkmark {
+    background-color: #444;
+}
+
+[data-theme="dark"] .checkbox-container:hover input ~ .checkmark {
+    background-color: #555;
 }
 
 .checkmark {
@@ -267,7 +280,7 @@ h2 {
 
 .recent-tag {
     background-color: rgba(78, 61, 240, 0.05);
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #666;
     padding: 0.5rem 1rem;
     border-radius: 20px;
     font-size: 0.9rem;
@@ -291,7 +304,7 @@ h2 {
 h3 {
     font-size: 1rem;
     margin-bottom: 0.8rem;
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #666;
 }
 
 .tags {
@@ -322,7 +335,7 @@ h3 {
 footer {
     text-align: center;
     margin-top: 3rem;
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #666;
     font-size: 0.9rem;
 }
 
@@ -460,14 +473,14 @@ footer {
 }
 
 .shortcut-description {
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #666;
     font-size: 0.9rem;
 }
 
 .no-results {
     text-align: center;
     padding: 2rem;
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #666;
 }
 
 /* Web results styling */
@@ -500,7 +513,7 @@ footer {
 .web-result-title {
     font-weight: bold;
     margin-bottom: 0.5rem;
-    color: var (--secondary-color);
+    color: var(--secondary-color);
 }
 
 .web-result-title a {
@@ -519,7 +532,7 @@ footer {
 
 .web-result-url {
     font-size: 0.8rem;
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #777;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -599,7 +612,7 @@ footer {
 
 .deep-search-disclaimer {
     font-size: 0.85rem;
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #777;
     font-style: italic;
     margin-bottom: 1rem;
     padding: 0 0.5rem;
@@ -647,7 +660,7 @@ footer {
     margin-bottom: 1rem;
     border-radius: 4px;
     font-size: 0.9rem;
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #666;
 }
 
 .info-note {
@@ -657,7 +670,7 @@ footer {
     margin-bottom: 1rem;
     border-radius: 4px;
     font-size: 0.9rem;
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #666;
 }
 
 .suggestion {
@@ -694,7 +707,7 @@ footer {
     margin-bottom: 1.5rem;
     border-radius: 8px;
     font-size: 0.85rem;
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #666;
     text-align: center;
     border: 1px dashed rgba(78, 61, 240, 0.2);
 }
@@ -747,7 +760,7 @@ footer {
     margin-bottom: 1.5rem;
     border-radius: 8px;
     font-size: 0.85rem;
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #666;
     text-align: center;
     border: 1px dashed rgba(78, 61, 240, 0.2);
 }
@@ -776,7 +789,7 @@ footer {
     color: #ffc107;
 }
 
-/* Theme toggle button - simplified animation */
+/* Theme toggle button */
 .theme-toggle {
     position: fixed;
     top: 1.5rem;
@@ -785,72 +798,23 @@ footer {
     color: var(--text-color);
     border: 1px solid var(--border-color);
     border-radius: 50%;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     box-shadow: var(--shadow);
     z-index: 100;
-    transition: transform 0.3s ease, 
-                box-shadow 0.3s ease,
-                background-color 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
 .theme-toggle:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(var(--main-color-rgb), 0.25);
+    transform: rotate(45deg);
 }
 
-.theme-toggle:active {
-    transform: translateY(0);
-}
-
-/* Style for the icons inside the toggle button */
 .theme-toggle i {
-    font-size: 1.3rem;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    color: var(--text-color);
-}
-
-/* Simplified icon transitions */
-[data-theme="light"] .theme-toggle .fa-moon {
-    opacity: 1;
-    transform: scale(1);
-}
-
-[data-theme="light"] .theme-toggle .fa-sun {
-    opacity: 0;
-    transform: scale(0);
-}
-
-[data-theme="dark"] .theme-toggle .fa-sun {
-    opacity: 1;
-    transform: scale(1);
-}
-
-[data-theme="dark"] .theme-toggle .fa-moon {
-    opacity: 0;
-    transform: scale(0);
-}
-
-/* Remove ripple effect and pulse animations */
-.theme-toggle::before {
-    display: none;
-}
-
-@keyframes pulse-light {
-    display: none;
-}
-
-@keyframes pulse-dark {
-    display: none;
-}
-
-[data-theme="dark"] .theme-toggle:hover,
-[data-theme="light"] .theme-toggle:hover {
-    animation: none;
+    font-size: 1.2rem;
 }
 
 /* Responsive design */
@@ -880,7 +844,7 @@ footer {
     margin-top: 1rem;
     border-radius: 4px;
     font-size: 0.9rem;
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #666;
     display: none; /* Initially hidden */
 }
 
@@ -892,7 +856,7 @@ footer {
     margin-top: 1rem;
     border-radius: 4px;
     font-size: 0.9rem;
-    color: var(--text-color-subtle); /* Updated to use variable */
+    color: #666;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -901,4 +865,24 @@ footer {
 
 .char-limit-notification i {
     color: red;
+}
+
+/* Add proper page transition overlay */
+.page-transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: opacity 0.4s ease;
+}
+
+.page-transition-overlay.active {
+    opacity: 1 !important; /* Force opacity with !important */
+    pointer-events: auto !important; /* Force pointer events */
+    display: block; /* Ensure it's displayed */
 }

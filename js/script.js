@@ -1,3 +1,22 @@
+// Fix issue where page transitions don't work
+
+// Create and add the page transition overlay
+const pageTransitionOverlay = document.createElement('div');
+pageTransitionOverlay.className = 'page-transition-overlay';
+document.body.appendChild(pageTransitionOverlay);
+
+// Define handlePageTransition function in global scope
+function handlePageTransition(targetUrl) {
+    console.log("Starting page transition to:", targetUrl);
+    // Activate the overlay
+    pageTransitionOverlay.classList.add('active');
+    
+    // Wait for the fade-out to complete
+    setTimeout(() => {
+        window.location.href = targetUrl;
+    }, 400); // Match this with the CSS transition time
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('search-input');
     const searchButton = document.getElementById('search-button');
@@ -43,10 +62,15 @@ document.addEventListener('DOMContentLoaded', function() {
         webSearchCheckbox.checked = false;
     }
     
-    // Handle search form submission
+    // Fix page transition by ensuring we start with full opacity
+    document.body.style.opacity = '1';
+    
+    // Handle search form submission with smooth transition
     function performSearch() {
         const query = searchInput.value.trim();
         if (query) {
+            console.log("Performing search for:", query);
+            
             // Save search query to localStorage
             localStorage.setItem('searchQuery', query);
             localStorage.setItem('webSearchEnabled', webSearchCheckbox.checked);
@@ -54,17 +78,25 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add to recent searches
             addToRecentSearches(query);
             
-            // Navigate to results page
-            window.location.href = 'results.html';
+            // Explicitly call the global function
+            handlePageTransition('results.html');
         }
     }
     
     // Search when button is clicked
-    searchButton.addEventListener('click', performSearch);
+    searchButton.addEventListener('click', function(e) {
+        console.log("Search button clicked");
+        e.preventDefault();
+        e.stopPropagation();
+        performSearch();
+        return false;
+    });
     
     // Search when Enter key is pressed in the input field
-    searchInput.addEventListener('keypress', function(e) {
+    searchInput.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
+            console.log("Enter key pressed in search");
+            e.preventDefault();
             performSearch();
         }
     });
@@ -144,17 +176,14 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('recentSearches', JSON.stringify(trimmedSearches));
     }
     
-    // Enhanced theme functionality
+    // Theme functionality
     function initTheme() {
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
     }
     
-    function toggleTheme(event) {
-        // Add transition class to body
-        document.body.classList.add('theme-transition');
-        
+    function toggleTheme() {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
         
@@ -162,77 +191,153 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('theme', newTheme);
         
         updateThemeIcon(newTheme);
-        
-        // Remove the transition class after animation completes
-        setTimeout(() => {
-            document.body.classList.remove('theme-transition');
-        }, 800); // Match this with the animation duration
     }
     
     function updateThemeIcon(theme) {
-        // Clear existing icons first
-        themeToggle.innerHTML = '';
-        
-        // Add only the appropriate icon based on the current theme
+        const icon = themeToggle.querySelector('i');
         if (theme === 'dark') {
-            const sunIcon = document.createElement('i');
-            sunIcon.className = 'fas fa-sun';
-            themeToggle.appendChild(sunIcon);
+            icon.className = 'fas fa-sun';
         } else {
-            const moonIcon = document.createElement('i');
-            moonIcon.className = 'fas fa-moon';
-            themeToggle.appendChild(moonIcon);
+            icon.className = 'fas fa-moon';
         }
     }
 
-    // Fetch shortcuts with error handling and fallback to the new text file
+    // Update the fetchShortcuts function to handle direct file access limitations
+
     function fetchShortcuts() {
         return new Promise((resolve, reject) => {
-            // Commented out the JSON fetch part
-            /*
-            fetch('blendershortcuts.json')
+            fetch('blender_4.3_hotkey_sheet_print.txt')
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error(`Failed to fetch JSON: ${response.status}`);
+                        throw new Error(`Failed to fetch official text: ${response.status}`);
                     }
-                    return response.json();
+                    return response.text();
                 })
-                .then(data => {
-                    console.log('Successfully loaded JSON data');
-                    // Mark that we're using the primary data source
-                    sessionStorage.setItem('dataSource', 'json');
-                    resolve(data);
+                .then(text => {
+                    const shortcuts = parseShortcutsText(text);
+                    console.log('Successfully loaded official text data');
+                    // Mark that we're using the secondary data source
+                    sessionStorage.setItem('dataSource', 'official_text');
+                    resolve(shortcuts);
                 })
-                .catch(jsonError => {
-                    console.warn('JSON fetch failed, trying official text file instead:', jsonError);
-            */
-                    // Fallback to official text file
-                    fetch('blender_4.3_hotkey_sheet_print.txt')
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`Failed to fetch official text: ${response.status}`);
-                            }
-                            return response.text();
-                        })
-                        .then(text => {
-                            const shortcuts = parseShortcutsText(text);
-                            console.log('Successfully loaded official text data');
-                            // Mark that we're using the secondary data source
-                            sessionStorage.setItem('dataSource', 'official_text');
-                            resolve(shortcuts);
-                        })
-                        .catch(officialTextError => {
-                            console.error('Official text fetch also failed:', officialTextError);
-                            
-                            // Last resort: use hardcoded basic shortcuts
-                            const basicShortcuts = getBasicShortcuts();
-                            console.log('Using hardcoded basic shortcuts');
-                            // Mark that we're using the emergency data source
-                            sessionStorage.setItem('dataSource', 'hardcoded');
-                            resolve(basicShortcuts);
-                        });
-            // });
+                .catch(officialTextError => {
+                    console.error('Official text fetch failed:', officialTextError);
+                    
+                    // Use hardcoded shortcuts if we're on file:// protocol
+                    if (window.location.protocol === 'file:') {
+                        console.log('Using hardcoded shortcuts due to file:// protocol limitations');
+                        const basicShortcuts = getBasicShortcuts();
+                        sessionStorage.setItem('dataSource', 'hardcoded');
+                        resolve(basicShortcuts);
+                    } else {
+                        reject(officialTextError);
+                    }
+                });
         });
+    }
+
+    // Add function to get basic shortcuts as a fallback
+    function getBasicShortcuts() {
+        return [
+            {
+                category: "View",
+                action: "Rotate 3D view",
+                keys: "MMB + Drag",
+                searchTerms: "rotate 3d view mmb + drag view"
+            },
+            {
+                category: "View",
+                action: "Zoom",
+                keys: "Mousewheel",
+                searchTerms: "zoom mousewheel view"
+            },
+            {
+                category: "View",
+                action: "Pan",
+                keys: "Shift + MMB + Drag",
+                searchTerms: "pan shift + mmb + drag view"
+            },
+            {
+                category: "General",
+                action: "Delete",
+                keys: "X",
+                searchTerms: "delete x general"
+            },
+            {
+                category: "General",
+                action: "Undo",
+                keys: "Ctrl + Z",
+                searchTerms: "undo ctrl + z general"
+            },
+            {
+                category: "General",
+                action: "Redo",
+                keys: "Shift + Ctrl + Z",
+                searchTerms: "redo shift + ctrl + z general"
+            },
+            {
+                category: "Transform",
+                action: "Move (Grab)",
+                keys: "G",
+                searchTerms: "move grab g transform"
+            },
+            {
+                category: "Transform",
+                action: "Rotate",
+                keys: "R",
+                searchTerms: "rotate r transform"
+            },
+            {
+                category: "Transform",
+                action: "Scale",
+                keys: "S",
+                searchTerms: "scale s transform"
+            },
+            {
+                category: "Edit Mode",
+                action: "Extrude",
+                keys: "E",
+                searchTerms: "extrude e edit mode"
+            }
+            // You can add more common shortcuts here
+        ];
+    }
+
+    // You will also need to implement the parseShortcutsText function in script.js
+    // if it's not already there:
+    function parseShortcutsText(text) {
+        const lines = text.split('\n');
+        let currentCategory = '';
+        const shortcuts = [];
+        
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            
+            // Skip empty lines and comment lines
+            if (!line || line.startsWith('//')) continue;
+            
+            // Check if it's a category header (doesn't contain a colon)
+            if (!line.includes(':')) {
+                currentCategory = line;
+                continue;
+            }
+            
+            // Parse shortcut line
+            const parts = line.split(':');
+            if (parts.length < 2) continue;
+            
+            const keys = parts[0].trim();
+            const action = parts.slice(1).join(':').trim();
+            
+            shortcuts.push({
+                category: currentCategory,
+                action: action,
+                keys: keys,
+                searchTerms: action.toLowerCase() + ' ' + keys.toLowerCase() + ' ' + currentCategory.toLowerCase()
+            });
+        }
+        
+        return shortcuts;
     }
 
     // Process natural language queries into search terms
@@ -380,4 +485,56 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display the unique results
         displayShortcutResults(uniqueShortcuts);
     }
+
+    // Add functionality for collapsible search box
+    const searchBox = document.querySelector('.search-box');
+    
+    // Start with collapsed state
+    searchBox.classList.add('collapsed');
+    
+    // Expand on focus
+    searchInput.addEventListener('focus', function() {
+        searchBox.classList.remove('collapsed');
+        searchBox.classList.add('expanded');
+    });
+    
+    // Collapse when focus is lost and input is empty
+    searchInput.addEventListener('blur', function() {
+        // Only collapse if the search input is empty
+        if (searchInput.value.trim() === '') {
+            searchBox.classList.remove('expanded');
+            searchBox.classList.add('collapsed');
+        }
+    });
+    
+    // If there's a value in the search input (like when returning from results),
+    // make sure it's expanded
+    if (searchInput.value.trim() !== '') {
+        searchBox.classList.remove('collapsed');
+        searchBox.classList.add('expanded');
+        // Explicitly enable the search button
+        searchButton.style.pointerEvents = 'auto';
+        searchButton.style.opacity = '1';
+    }
+    
+    // Ensure search button becomes clickable on focus
+    searchInput.addEventListener('focus', function() {
+        searchBox.classList.remove('collapsed');
+        searchBox.classList.add('expanded');
+        // Explicitly enable the search button
+        searchButton.style.pointerEvents = 'auto';
+        searchButton.style.opacity = '1';
+    });
+    
+    // Directly attach click handler to search button with debugging
+    searchButton.addEventListener('click', function(e) {
+        console.log("Search button clicked");
+        e.preventDefault();
+        performSearch();
+    });
+
+    // Fade in the page once loaded
+    setTimeout(() => {
+        document.body.classList.add('loaded');
+    }, 50);
 });

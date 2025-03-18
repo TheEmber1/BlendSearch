@@ -1,4 +1,14 @@
+// Create and add the page transition overlay in global scope
+const pageTransitionOverlay = document.createElement('div');
+pageTransitionOverlay.className = 'page-transition-overlay';
+document.body.appendChild(pageTransitionOverlay);
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Fade in the page once loaded - do this immediately
+    setTimeout(() => {
+        document.body.classList.add('loaded');
+    }, 50);
+    
     const searchTerm = document.getElementById('search-term');
     const searchResults = document.getElementById('search-results');
     const backButton = document.getElementById('back-button');
@@ -49,13 +59,26 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
         });
     
-    // Handle back button
-    backButton.addEventListener('click', function() {
+    // Handle back button with smooth transition
+    backButton.addEventListener('click', function(e) {
+        console.log("Back button clicked");
+        e.preventDefault();
+        
         // Store the current search query in sessionStorage to retrieve when returning
         sessionStorage.setItem('returnSearch', query);
         // Also store the checkbox state
         sessionStorage.setItem('webSearchState', webSearchEnabled.toString());
-        window.location.href = 'index.html';
+        
+        // Activate the overlay - make this more reliable
+        console.log("Activating overlay");
+        pageTransitionOverlay.style.opacity = '1';
+        pageTransitionOverlay.style.pointerEvents = 'auto';
+        pageTransitionOverlay.classList.add('active');
+        
+        // Wait for the fade-out to complete
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 400); // Match this with the CSS transition time
     });
     
     // Fetch shortcuts with error handling
@@ -74,8 +97,81 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Failed to fetch text:', error);
+                // Try the hardcoded fallback when fetch fails (for file:// protocol)
+                if (window.location.protocol === 'file:') {
+                    console.log('Using hardcoded shortcuts due to file:// protocol limitations');
+                    return getHardcodedShortcuts();
+                }
                 throw error;
             });
+    }
+    
+    // Add a function to provide fallback shortcuts when fetch fails
+    function getHardcodedShortcuts() {
+        // Return a basic set of common shortcuts
+        return [
+            {
+                category: "View",
+                action: "Rotate 3D view",
+                keys: "MMB + Drag",
+                searchTerms: "rotate 3d view mmb + drag view"
+            },
+            {
+                category: "View",
+                action: "Zoom",
+                keys: "Mousewheel",
+                searchTerms: "zoom mousewheel view"
+            },
+            {
+                category: "View",
+                action: "Pan",
+                keys: "Shift + MMB + Drag",
+                searchTerms: "pan shift + mmb + drag view"
+            },
+            {
+                category: "General",
+                action: "Delete",
+                keys: "X",
+                searchTerms: "delete x general"
+            },
+            {
+                category: "General",
+                action: "Undo",
+                keys: "Ctrl + Z",
+                searchTerms: "undo ctrl + z general"
+            },
+            {
+                category: "General",
+                action: "Redo",
+                keys: "Shift + Ctrl + Z",
+                searchTerms: "redo shift + ctrl + z general"
+            },
+            {
+                category: "Transform",
+                action: "Move (Grab)",
+                keys: "G",
+                searchTerms: "move grab g transform"
+            },
+            {
+                category: "Transform",
+                action: "Rotate",
+                keys: "R",
+                searchTerms: "rotate r transform"
+            },
+            {
+                category: "Transform",
+                action: "Scale",
+                keys: "S",
+                searchTerms: "scale s transform"
+            },
+            {
+                category: "Edit Mode",
+                action: "Extrude",
+                keys: "E",
+                searchTerms: "extrude e edit mode"
+            }
+            // You can add more common shortcuts here
+        ];
     }
     
     // Parse text file format
@@ -263,17 +359,14 @@ document.addEventListener('DOMContentLoaded', function() {
         container.innerHTML += resultsHTML;
     }
     
-    // Enhanced theme functionality
+    // Theme functionality
     function initTheme() {
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
     }
     
-    function toggleTheme(event) {
-        // Add transition class to body
-        document.body.classList.add('theme-transition');
-        
+    function toggleTheme() {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
         
@@ -281,26 +374,14 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('theme', newTheme);
         
         updateThemeIcon(newTheme);
-        
-        // Remove the transition class after animation completes
-        setTimeout(() => {
-            document.body.classList.remove('theme-transition');
-        }, 800); // Match this with the animation duration
     }
     
     function updateThemeIcon(theme) {
-        // Clear existing icons first
-        themeToggle.innerHTML = '';
-        
-        // Add only the appropriate icon based on the current theme
+        const icon = themeToggle.querySelector('i');
         if (theme === 'dark') {
-            const sunIcon = document.createElement('i');
-            sunIcon.className = 'fas fa-sun';
-            themeToggle.appendChild(sunIcon);
+            icon.className = 'fas fa-sun';
         } else {
-            const moonIcon = document.createElement('i');
-            moonIcon.className = 'fas fa-moon';
-            themeToggle.appendChild(moonIcon);
+            icon.className = 'fas fa-moon';
         }
     }
     
