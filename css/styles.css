@@ -11,6 +11,7 @@
     --shadow: 0 4px 12px rgba(78, 61, 240, 0.15);
     --subtle-text: #b1b1b1;
     --border-color: #e1e5ee;
+    --main-color-rgb: 78, 61, 240; /* RGB version of main color */
     
     /* Animation properties */
     --theme-transition-time: 0.6s;
@@ -30,6 +31,7 @@
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     --subtle-text: #b0b0b0;
     --border-color: #444;
+    --main-color-rgb: 123, 108, 246; /* RGB version of main color for dark mode */
 }
 
 * {
@@ -51,7 +53,7 @@ body {
     overflow-x: hidden;
 }
 
-/* Add overlay for theme transition effect */
+/* Add overlay for theme transition effect - simplified with fade */
 body::after {
     content: '';
     position: fixed;
@@ -59,36 +61,28 @@ body::after {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: radial-gradient(
-        circle at var(--x, 100%) var(--y, 0%),
-        transparent 0%,
-        transparent 100%
-    );
-    mix-blend-mode: difference;
+    background-color: var(--main-color);
+    opacity: 0;
     pointer-events: none;
     z-index: 9999;
-    opacity: 0;
-    transition: opacity var(--theme-transition-time) var(--theme-transition-easing);
+    transition: opacity 0.5s ease;
+    mix-blend-mode: overlay;
 }
 
 body.theme-transition::after {
-    opacity: 1;
-    --x: var(--mouse-x, 100%);
-    --y: var(--mouse-y, 0%);
-    background: radial-gradient(
-        circle at var(--x, 100%) var(--y, 0%),
-        rgba(78, 61, 240, 0.15) 0%,
-        transparent 50%
-    );
-    animation: theme-ripple 0.6s var(--theme-transition-easing);
+    opacity: 0.2;
+    animation: simple-fade 0.8s ease forwards;
 }
 
-@keyframes theme-ripple {
-    from {
-        clip-path: circle(0% at var(--x, 100%) var(--y, 0%));
+@keyframes simple-fade {
+    0% {
+        opacity: 0.2;
     }
-    to {
-        clip-path: circle(150% at var(--x, 100%) var(--y, 0%));
+    50% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 0;
     }
 }
 
@@ -506,7 +500,7 @@ footer {
 .web-result-title {
     font-weight: bold;
     margin-bottom: 0.5rem;
-    color: var(--secondary-color);
+    color: var (--secondary-color);
 }
 
 .web-result-title a {
@@ -782,7 +776,7 @@ footer {
     color: #ffc107;
 }
 
-/* Theme toggle button */
+/* Theme toggle button - simplified animation */
 .theme-toggle {
     position: fixed;
     top: 1.5rem;
@@ -799,57 +793,28 @@ footer {
     cursor: pointer;
     box-shadow: var(--shadow);
     z-index: 100;
-    overflow: hidden;
-    transition: transform 0.3s var(--theme-transition-easing), 
-                box-shadow 0.3s var(--theme-transition-easing),
-                background-color 0.3s var(--theme-transition-easing);
+    transition: transform 0.3s ease, 
+                box-shadow 0.3s ease,
+                background-color 0.3s ease;
 }
 
 .theme-toggle:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 15px rgba(78, 61, 240, 0.25);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(var(--main-color-rgb), 0.25);
 }
 
 .theme-toggle:active {
-    transform: translateY(0) scale(0.95);
+    transform: translateY(0);
 }
 
 /* Style for the icons inside the toggle button */
 .theme-toggle i {
     font-size: 1.3rem;
-    transition: transform 0.6s var(--theme-transition-easing), 
-                opacity 0.3s var(--theme-transition-easing),
-                color 0.3s var(--theme-transition-easing);
-    position: absolute;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    color: var(--text-color);
 }
 
-/* Sun icon specifics */
-.theme-toggle .fa-sun {
-    color: #ff9d00;
-    animation: rotate-sun 0.6s var(--theme-transition-easing) forwards;
-}
-
-/* Moon icon specifics */
-.theme-toggle .fa-moon {
-    color: #6e76ff;
-    animation: rotate-moon 0.6s var(--theme-transition-easing) forwards;
-}
-
-/* Dark theme specific changes to button */
-[data-theme="dark"] .theme-toggle {
-    box-shadow: 0 4px 15px rgba(100, 100, 255, 0.3);
-}
-
-[data-theme="dark"] .theme-toggle:hover {
-    box-shadow: 0 8px 25px rgba(100, 100, 255, 0.4);
-    animation: pulse-dark 2s infinite;
-}
-
-[data-theme="light"] .theme-toggle:hover {
-    animation: pulse-light 2s infinite;
-}
-
-/* Ensure the appropriate icon is visible based on theme */
+/* Simplified icon transitions */
 [data-theme="light"] .theme-toggle .fa-moon {
     opacity: 1;
     transform: scale(1);
@@ -870,27 +835,22 @@ footer {
     transform: scale(0);
 }
 
-/* Define keyframes for theme toggle animation */
-@keyframes rotate-sun {
-    from { transform: rotate(0deg) scale(0.8); opacity: 0; }
-    to { transform: rotate(360deg) scale(1); opacity: 1; }
-}
-
-@keyframes rotate-moon {
-    from { transform: rotate(0deg) scale(0.8); opacity: 0; }
-    to { transform: rotate(-360deg) scale(1); opacity: 1; }
+/* Remove ripple effect and pulse animations */
+.theme-toggle::before {
+    display: none;
 }
 
 @keyframes pulse-light {
-    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
-    70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+    display: none;
 }
 
 @keyframes pulse-dark {
-    0% { box-shadow: 0 0 0 0 rgba(100, 100, 255, 0.4); }
-    70% { box-shadow: 0 0 0 15px rgba(100, 100, 255, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(100, 100, 255, 0); }
+    display: none;
+}
+
+[data-theme="dark"] .theme-toggle:hover,
+[data-theme="light"] .theme-toggle:hover {
+    animation: none;
 }
 
 /* Responsive design */

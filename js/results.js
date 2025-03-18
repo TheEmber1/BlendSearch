@@ -271,14 +271,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function toggleTheme(event) {
-        // Store mouse position for the animation
-        if (event) {
-            const x = event.clientX;
-            const y = event.clientY;
-            document.documentElement.style.setProperty('--mouse-x', `${x}px`);
-            document.documentElement.style.setProperty('--mouse-y', `${y}px`);
-        }
-        
         // Add transition class to body
         document.body.classList.add('theme-transition');
         
@@ -293,20 +285,23 @@ document.addEventListener('DOMContentLoaded', function() {
         // Remove the transition class after animation completes
         setTimeout(() => {
             document.body.classList.remove('theme-transition');
-        }, 600);
+        }, 800); // Match this with the animation duration
     }
     
     function updateThemeIcon(theme) {
-        const moonIcon = document.createElement('i');
-        moonIcon.className = 'fas fa-moon';
-        
-        const sunIcon = document.createElement('i');
-        sunIcon.className = 'fas fa-sun';
-        
-        // Clear existing icons and add both
+        // Clear existing icons first
         themeToggle.innerHTML = '';
-        themeToggle.appendChild(moonIcon);
-        themeToggle.appendChild(sunIcon);
+        
+        // Add only the appropriate icon based on the current theme
+        if (theme === 'dark') {
+            const sunIcon = document.createElement('i');
+            sunIcon.className = 'fas fa-sun';
+            themeToggle.appendChild(sunIcon);
+        } else {
+            const moonIcon = document.createElement('i');
+            moonIcon.className = 'fas fa-moon';
+            themeToggle.appendChild(moonIcon);
+        }
     }
     
     // Adjust font size based on query length
